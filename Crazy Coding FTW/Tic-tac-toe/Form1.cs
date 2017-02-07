@@ -45,10 +45,21 @@ namespace Tic_tac_toe
                 {bt4.Text,bt5.Text,bt6.Text },
                 {bt7.Text,bt8.Text,bt9.Text },
             };
-            AI.AI.Check(bt);
-            int[] pastePosition = AI.AI.GenerateO();
-            AccessBT(pastePosition[0], pastePosition[1]).Text = "O";
-            AccessBT(pastePosition[0], pastePosition[1]).Enabled = false;
+
+            bool canRun = false;
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
+                    if (AccessBT(i, j).Enabled)
+                        canRun = true;
+
+            if (canRun&&!CheckWin())
+            {
+                AI.AI.Check(bt);
+                int[] pastePosition = AI.AI.GenerateO();
+                AccessBT(pastePosition[0], pastePosition[1]).Text = "O";
+                AccessBT(pastePosition[0], pastePosition[1]).Enabled = false;
+                CheckWin();
+            }
         }
         private void bt1_Click(object sender, EventArgs e)
         {
@@ -111,13 +122,168 @@ namespace Tic_tac_toe
                 {
                     AccessBT(i, j).Text = "";
                     AccessBT(i, j).Enabled = true;
+                    AccessBT(i, j).BackColor = Control.DefaultBackColor;
                 }
+            AI.AI.EmptyReset();
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             scoreC.Text = "0";
             scoreH.Text = "0";
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
+                    AccessBT(i, j).BackColor = Control.DefaultBackColor;
+        }
+
+        private bool CheckWin()
+        {
+            int X = 0;
+            int O = 0;
+
+            for (int i = 0; i < 3; i++)                             //line
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    if (AccessBT(i, j).Text == "X")
+                        X++;
+                    else if (AccessBT(i, j).Text == "O")
+                        O++;
+                }
+                if (O == 3)
+                {
+                    for (int k = 0; k < 3; k++)
+                        AccessBT(i, k).BackColor = Color.OrangeRed;
+                    scoreC.Text = (int.Parse(scoreC.Text) + 1).ToString();
+                    return true;
+                }
+                else if (X == 3)
+                {
+                    for (int k = 0; k < 3; k++)
+                        AccessBT(i, k).BackColor = Color.GreenYellow;
+                    scoreH.Text = (int.Parse(scoreH.Text) + 1).ToString();
+                    return true;
+                }
+                else
+                {
+                    X = 0;
+                    O = 0;
+                }
+            }
+
+            for (int i = 0; i < 3; i++)                             //Colomn
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    if (AccessBT(j, i).Text == "X")
+                        X++;
+                    else if (AccessBT(j, i).Text == "O")
+                        O++;
+                }
+                if (O == 3)
+                {
+                    for (int k = 0; k < 3; k++)
+                        AccessBT(k, i).BackColor = Color.OrangeRed;
+                    scoreC.Text = (int.Parse(scoreC.Text) + 1).ToString();
+                    return true;
+                }
+                else if (X == 3)
+                {
+                    for (int k = 0; k < 3; k++)
+                        AccessBT(k, i).BackColor = Color.GreenYellow;
+                    scoreH.Text = (int.Parse(scoreH.Text) + 1).ToString();
+                    return true;
+                }
+                else
+                {
+                    X = 0;
+                    O = 0;
+                }
+            }
+
+            #region Diagonal 1
+            if (AccessBT(0, 0).Text == "X")
+                X++;
+            else if (AccessBT(0, 0).Text == "0")
+                O++;
+
+            if (AccessBT(1, 1).Text == "X")
+                X++;
+            else if (AccessBT(1, 1).Text == "O")
+                O++;
+
+            if (AccessBT(2, 2).Text == "X")
+                X++;
+            else if (AccessBT(2, 2).Text == "O")
+                O++;
+
+            if (O == 3)
+            {
+                AccessBT(0, 0).BackColor = Color.OrangeRed;
+                AccessBT(1, 1).BackColor = Color.OrangeRed;
+                AccessBT(2, 2).BackColor = Color.OrangeRed;
+                scoreH.Text = (int.Parse(scoreH.Text) + 1).ToString();
+                return true;
+            }
+            else if (X == 3)
+            {
+                AccessBT(0, 0).BackColor = Color.GreenYellow;
+                AccessBT(1, 1).BackColor = Color.GreenYellow;
+                AccessBT(2, 2).BackColor = Color.GreenYellow;
+                scoreH.Text = (int.Parse(scoreH.Text) + 1).ToString();
+                return true;
+            }
+            else
+            {
+                X = 0;
+                O = 0;
+            }
+            #endregion
+
+            #region Diagonal 2
+            if (AccessBT(0, 2).Text == "X")
+                X++;
+            else if (AccessBT(0, 2).Text == "0")
+                O++;
+
+            if (AccessBT(1, 1).Text == "X")
+                X++;
+            else if (AccessBT(1, 1).Text == "O")
+                O++;
+
+            if (AccessBT(2, 0).Text == "X")
+                X++;
+            else if (AccessBT(2, 0).Text == "O")
+                O++;
+
+            if (O == 3)
+            {
+                AccessBT(0, 2).BackColor = Color.OrangeRed;
+                AccessBT(1, 1).BackColor = Color.OrangeRed;
+                AccessBT(2, 0).BackColor = Color.OrangeRed;
+                scoreH.Text = (int.Parse(scoreH.Text) + 1).ToString();
+                return true;
+            }
+            else if (X == 3)
+            {
+                AccessBT(0, 2).BackColor = Color.GreenYellow;
+                AccessBT(1, 1).BackColor = Color.GreenYellow;
+                AccessBT(2, 0).BackColor = Color.GreenYellow;
+                scoreH.Text = (int.Parse(scoreH.Text) + 1).ToString();
+                return true;
+            }
+            else
+            {
+                X = 0;
+                O = 0;
+            }
+
+            if (X == 0 && O == 0)
+                return false;
+
+            return true;
+            #endregion
         }
     }
 }

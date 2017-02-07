@@ -136,18 +136,18 @@
             // 
             // scoreC
             // 
-            this.scoreC.AutoSize = true;
             this.scoreC.BackColor = System.Drawing.Color.White;
-            this.scoreC.Location = new System.Drawing.Point(241, 59);
+            this.scoreC.Location = new System.Drawing.Point(227, 50);
             this.scoreC.Name = "scoreC";
-            this.scoreC.Size = new System.Drawing.Size(40, 13);
+            this.scoreC.Size = new System.Drawing.Size(69, 22);
             this.scoreC.TabIndex = 10;
             this.scoreC.Text = "scoreC";
+            this.scoreC.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(233, 97);
+            this.label3.Location = new System.Drawing.Point(222, 97);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(78, 13);
             this.label3.TabIndex = 11;
@@ -155,13 +155,13 @@
             // 
             // scoreH
             // 
-            this.scoreH.AutoSize = true;
             this.scoreH.BackColor = System.Drawing.Color.White;
-            this.scoreH.Location = new System.Drawing.Point(240, 134);
+            this.scoreH.Location = new System.Drawing.Point(227, 123);
             this.scoreH.Name = "scoreH";
-            this.scoreH.Size = new System.Drawing.Size(41, 13);
+            this.scoreH.Size = new System.Drawing.Size(69, 22);
             this.scoreH.TabIndex = 12;
             this.scoreH.Text = "scoreH";
+            this.scoreH.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // ngBT
             // 
@@ -192,8 +192,9 @@
             this.Controls.Add(this.bt3);
             this.Controls.Add(this.bt2);
             this.Controls.Add(this.bt1);
+            this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Tic-tac-toe";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
