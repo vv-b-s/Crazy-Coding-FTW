@@ -54,7 +54,7 @@ namespace AI
         public static int[] GenerateO()
         {
             int[] output = new int[2];
-            if (XesCount == 1&&OesCount==0)
+            if (XesCount == 1 && OesCount == 0)
             {
                 for (;;)
                 {
@@ -77,8 +77,8 @@ namespace AI
                 else if (FailPotential(ref output))
                     return output;
                 else
-                {                    
-                    for(;;)
+                {
+                    for (;;)
                     {
                         output[0] = rand.Next(3);
                         output[1] = rand.Next(3);
@@ -387,7 +387,7 @@ namespace AI
             }
             #endregion
 
-            return false;            
+            return false;
         }
 
         static bool WinPotential(ref int[] pos)
