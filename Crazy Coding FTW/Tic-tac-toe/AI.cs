@@ -72,9 +72,9 @@ namespace AI
             }
             if (XesCount > 1)
             {
-                if (WinPotential(ref output))
+                if (StrikeMove("O", ref output))              // Tries to win
                     return output;
-                else if (FailPotential(ref output))
+                else if (StrikeMove("X", ref output))       // Makes sure the oponent doesn't
                     return output;
                 else
                 {
@@ -97,589 +97,101 @@ namespace AI
         }
 
 
-        static bool FailPotential(ref int[] pos)
+        static bool StrikeMove(string _XorO, ref int[] pos)
         {
-            #region 0,0
-            if (hasX[0, 0])                                          /// Left top
+            bool[,] XorO = new bool[3, 3];
+            switch (_XorO)               //Decides what to look for
             {
-                if (hasX[0, 1] && empty[0, 2])                      // Middle Top
+                case "X":
+                    XorO = hasX;
+                    break;
+                case "O":
+                    XorO = hasO;
+                    break;
+            }
+
+            #region Check roll
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
                 {
-                    pos[0] = 0;
-                    pos[1] = 2;
-                    return true;
+                    if (XorO[i, j])
+                    {
+                        if (XorO[i, (j + 1) % 3] && empty[i, (j + 2) % 3])   // If j + 1 = 3, 3%3=0
+                        {
+                            pos[0] = i;
+                            pos[1] = (j + 2) % 3;
+                            return true;
+                        }
+                        if (XorO[i, (j + 2) % 3] && empty[i, (j + 1) % 3])
+                        {
+                            pos[0] = i;
+                            pos[1] = (j + 1) % 3;
+                            return true;
+                        }
+                    }
                 }
-                if (hasX[0, 2] && empty[0, 1])             // Right Top
+            #endregion
+
+            #region Check col
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
                 {
-                    pos[0] = 0;
-                    pos[1] = 1;
-                    return true;
+                    if (XorO[j, i])
+                    {
+                        if (XorO[(j + 1) % 3, i] && empty[(j + 2) % 3, i])   // If i + 1 = 3, 3%3=0
+                        {
+                            pos[1] = i;
+                            pos[0] = (j + 2) % 3;
+                            return true;
+                        }
+                        if (XorO[(j + 2) % 3, i] && empty[(j + 1) % 3, i])
+                        {
+                            pos[1] = i;
+                            pos[0] = (j + 1) % 3;
+                            return true;
+                        }
+                    }
                 }
-                if (hasX[1, 0] && empty[2, 0])             //Left Middle
+            #endregion
+
+            #region Diagonals
+            for (int i = 0; i < 3; i++)
+            {
+                if (XorO[i, i])
                 {
-                    pos[0] = 2;
-                    pos[1] = 0;
-                    return true;
+                    if (XorO[(i + 1) % 3, (i + 1) % 3] && empty[(i + 2) % 3, (i + 2) % 3])
+                    {
+                        pos[0] = (i + 2) % 3;
+                        pos[1] = (i + 2) % 3;
+                        return true;
+                    }
+                    if (XorO[(i + 2) % 3, (i + 2) % 3] && empty[(i + 1) % 3, (i + 1) % 3])
+                    {
+                        pos[0] = (i + 1) % 3;
+                        pos[1] = (i + 1) % 3;
+                    }
                 }
-                if (hasX[2, 0] && empty[1, 0])          // Bottom Left
+            }
+
+            for (int i = 0, j = 2; i < 3; i++, j--)
+            {
+                if (XorO[i, j])
                 {
-                    pos[0] = 1;
-                    pos[1] = 0;
-                    return true;
-                }
-                if (hasX[1, 1] && empty[2, 2])       // Middle Middle
-                {
-                    pos[0] = 2;
-                    pos[1] = 2;
-                    return true;
-                }
-                if (hasX[2, 2] && empty[1, 1])   // Right bottom
-                {
-                    pos[0] = 1;
-                    pos[1] = 1;
-                    return true;
+                    if (XorO[(i + 1) % 3, Math.Abs(j - i)] && empty[(i + 2) % 3, (j+1)%3])          // Math.Abs() is used so when 2,0 is reached to look at 0,2 and not 0,-2
+                    {
+                        pos[0] = (i + 2) % 3;
+                        pos[1] = (j + 1) % 3;
+                        return true;
+                    }
+                    if (XorO[(i + 2) % 3, (j + 1) % 3] && empty[(i + 1) % 3, Math.Abs(j - i)])
+                    {
+                        pos[0] = (i + 1) % 3;
+                        pos[1] = Math.Abs(j - i);
+                        return true;
+                    }
                 }
             }
             #endregion
-
-            #region 0,1
-            if (hasX[0, 1])                         /// Middle top
-            {
-                if (hasX[0, 0] && empty[0, 2])                      // Left Top
-                {
-                    pos[0] = 0;
-                    pos[1] = 2;
-                    return true;
-                }
-                if (hasX[0, 2] && empty[0, 0])             // Right Top
-                {
-                    pos[0] = 0;
-                    pos[1] = 0;
-                    return true;
-                }
-                if (hasX[1, 1] && empty[2, 1])             //Middle Middle
-                {
-                    pos[0] = 2;
-                    pos[1] = 1;
-                    return true;
-                }
-                if (hasX[2, 1] && empty[1, 1])          // Bottom Middle
-                {
-                    pos[0] = 1;
-                    pos[1] = 1;
-                    return true;
-                }
-            }
-            #endregion
-
-            #region 0,2
-            if (hasX[0, 2])                                  ///Right top
-            {
-                if (hasX[0, 1] && empty[0, 0])                      // Middle Top
-                {
-                    pos[0] = 0;
-                    pos[1] = 0;
-                    return true;
-                }
-                if (hasX[0, 0] && empty[0, 1])             // Left Top
-                {
-                    pos[0] = 0;
-                    pos[1] = 1;
-                    return true;
-                }
-                if (hasX[1, 2] && empty[2, 2])             //Right Middle
-                {
-                    pos[0] = 2;
-                    pos[1] = 2;
-                    return true;
-                }
-                if (hasX[2, 2] && empty[1, 1])          // Bottom Right
-                {
-                    pos[0] = 1;
-                    pos[1] = 1;
-                    return true;
-                }
-                if (hasX[1, 1] && empty[2, 0])       // Middle Middle
-                {
-                    pos[0] = 2;
-                    pos[1] = 0;
-                    return true;
-                }
-                if (hasX[2, 0] && empty[1, 1])   // Right bottom
-                {
-                    pos[0] = 1;
-                    pos[1] = 1;
-                    return true;
-                }
-            }
-            #endregion
-
-            #region 1,0
-            if (hasX[1, 0])                                        /// Middle left
-            {
-                if (hasX[0, 0] && empty[2, 0])                      // Left Top
-                {
-                    pos[0] = 2;
-                    pos[1] = 0;
-                    return true;
-                }
-                if (hasX[2, 0] && empty[0, 0])             // Left Bottom
-                {
-                    pos[0] = 0;
-                    pos[1] = 0;
-                    return true;
-                }
-                if (hasX[1, 1] && empty[1, 2])             //Middle Middle
-                {
-                    pos[0] = 1;
-                    pos[1] = 2;
-                    return true;
-                }
-                if (hasX[1, 2] && empty[1, 1])          // Middle Right
-                {
-                    pos[0] = 1;
-                    pos[1] = 1;
-                    return true;
-                }
-            }
-            #endregion
-
-            #region 1,2
-            if (hasX[1, 2])                                      ///Right Middle
-            {
-                if (hasX[0, 2] && empty[2, 2])                      // Right Top
-                {
-                    pos[0] = 2;
-                    pos[1] = 2;
-                    return true;
-                }
-                if (hasX[2, 2] && empty[0, 2])             // Right Bottom
-                {
-                    pos[0] = 0;
-                    pos[1] = 2;
-                    return true;
-                }
-                if (hasX[1, 1] && empty[1, 0])             //Middle Middle
-                {
-                    pos[0] = 1;
-                    pos[1] = 0;
-                    return true;
-                }
-                if (hasX[1, 0] && empty[1, 1])          // Middle Left
-                {
-                    pos[0] = 1;
-                    pos[1] = 1;
-                    return true;
-                }
-            }
-            #endregion
-
-            #region 2,0
-            if (hasX[2, 0])                                      /// Left Bottom
-            {
-                if (hasX[2, 1] && empty[2, 2])                      // Middle Bottom
-                {
-                    pos[0] = 2;
-                    pos[1] = 2;
-                    return true;
-                }
-                if (hasX[2, 2] && empty[2, 1])             // Right Bottom
-                {
-                    pos[0] = 2;
-                    pos[1] = 1;
-                    return true;
-                }
-                if (hasX[1, 0] && empty[0, 0])             //Left Middle
-                {
-                    pos[0] = 0;
-                    pos[1] = 0;
-                    return true;
-                }
-                if (hasX[0, 0] && empty[1, 0])          // Left Top
-                {
-                    pos[0] = 1;
-                    pos[1] = 0;
-                    return true;
-                }
-                if (hasX[1, 1] && empty[0, 2])       // Middle Middle
-                {
-                    pos[0] = 0;
-                    pos[1] = 2;
-                    return true;
-                }
-                if (hasX[0, 2] && empty[1, 1])   // Right Top
-                {
-                    pos[0] = 1;
-                    pos[1] = 1;
-                    return true;
-                }
-            }
-            #endregion 2,0
-
-            #region 2,1
-            if (hasX[2, 1])                              /// Middle Bottom
-            {
-                if (hasX[2, 2] && empty[2, 0])                      // Right Bottom
-                {
-                    pos[0] = 2;
-                    pos[1] = 0;
-                    return true;
-                }
-                if (hasX[2, 0] && empty[2, 2])             // Left Bottom
-                {
-                    pos[0] = 2;
-                    pos[1] = 2;
-                    return true;
-                }
-                if (hasX[1, 1] && empty[0, 1])             //Middle Middle
-                {
-                    pos[0] = 0;
-                    pos[1] = 1;
-                    return true;
-                }
-                if (hasX[0, 1] && empty[1, 1])          // Top Middle
-                {
-                    pos[0] = 1;
-                    pos[1] = 1;
-                    return true;
-                }
-            }
-            #endregion
-
-            #region 2.2
-            if (hasX[2, 2])              /// Right Middle
-            {
-                if (hasX[2, 1] && empty[2, 0])                      // Middle Bottom
-                {
-                    pos[0] = 2;
-                    pos[1] = 0;
-                    return true;
-                }
-                if (hasX[2, 0] && empty[2, 1])             // Right Bottom
-                {
-                    pos[0] = 2;
-                    pos[1] = 1;
-                    return true;
-                }
-                if (hasX[1, 2] && empty[0, 2])             //Right Middle
-                {
-                    pos[0] = 0;
-                    pos[1] = 2;
-                    return true;
-                }
-                if (hasX[0, 2] && empty[1, 2])          // Top Right
-                {
-                    pos[0] = 1;
-                    pos[1] = 2;
-                    return true;
-                }
-                if (hasX[1, 1] && empty[0, 0])       // Middle Middle
-                {
-                    pos[0] = 0;
-                    pos[1] = 0;
-                    return true;
-                }
-                if (hasX[0, 0] && empty[1, 1])   // Top Left
-                {
-                    pos[0] = 1;
-                    pos[1] = 1;
-                    return true;
-                }
-            }
-            #endregion
-
-            return false;
-        }
-
-        static bool WinPotential(ref int[] pos)
-        {
-            #region 0,0
-            if (hasO[0, 0])                                          /// Left top
-            {
-                if (hasO[0, 1] && empty[0, 2])                      // Middle Top
-                {
-                    pos[0] = 0;
-                    pos[1] = 2;
-                    return true;
-                }
-                if (hasO[0, 2] && empty[0, 1])             // Right Top
-                {
-                    pos[0] = 0;
-                    pos[1] = 1;
-                    return true;
-                }
-                if (hasO[1, 0] && empty[2, 0])             //Left Middle
-                {
-                    pos[0] = 2;
-                    pos[1] = 0;
-                    return true;
-                }
-                if (hasO[2, 0] && empty[1, 0])          // Bottom Left
-                {
-                    pos[0] = 1;
-                    pos[1] = 0;
-                    return true;
-                }
-                if (hasO[1, 1] && empty[2, 2])       // Middle Middle
-                {
-                    pos[0] = 2;
-                    pos[1] = 2;
-                    return true;
-                }
-                if (hasO[2, 2] && empty[1, 1])   // Right bottom
-                {
-                    pos[0] = 1;
-                    pos[1] = 1;
-                    return true;
-                }
-            }
-            #endregion
-
-            #region 0,1
-            if (hasO[0, 1])                         /// Middle top
-            {
-                if (hasO[0, 0] && empty[0, 2])                      // Left Top
-                {
-                    pos[0] = 0;
-                    pos[1] = 2;
-                    return true;
-                }
-                if (hasO[0, 2] && empty[0, 0])             // Right Top
-                {
-                    pos[0] = 0;
-                    pos[1] = 0;
-                    return true;
-                }
-                if (hasO[1, 1] && empty[2, 1])             //Middle Middle
-                {
-                    pos[0] = 2;
-                    pos[1] = 1;
-                    return true;
-                }
-                if (hasO[2, 1] && empty[1, 1])          // Bottom Middle
-                {
-                    pos[0] = 1;
-                    pos[1] = 1;
-                    return true;
-                }
-            }
-            #endregion
-
-            #region 0,2
-            if (hasO[0, 2])                                  ///Right top
-            {
-                if (hasO[0, 1] && empty[0, 0])                      // Middle Top
-                {
-                    pos[0] = 0;
-                    pos[1] = 0;
-                    return true;
-                }
-                if (hasO[0, 0] && empty[0, 1])             // Left Top
-                {
-                    pos[0] = 0;
-                    pos[1] = 1;
-                    return true;
-                }
-                if (hasO[1, 2] && empty[2, 2])             //Right Middle
-                {
-                    pos[0] = 2;
-                    pos[1] = 2;
-                    return true;
-                }
-                if (hasO[2, 2] && empty[1, 1])          // Bottom Right
-                {
-                    pos[0] = 1;
-                    pos[1] = 1;
-                    return true;
-                }
-                if (hasO[1, 1] && empty[2, 0])       // Middle Middle
-                {
-                    pos[0] = 2;
-                    pos[1] = 0;
-                    return true;
-                }
-                if (hasO[2, 0] && empty[1, 1])   // Right bottom
-                {
-                    pos[0] = 1;
-                    pos[1] = 1;
-                    return true;
-                }
-            }
-            #endregion
-
-            #region 1,0
-            if (hasO[1, 0])                                        /// Middle left
-            {
-                if (hasO[0, 0] && empty[2, 0])                      // Left Top
-                {
-                    pos[0] = 2;
-                    pos[1] = 0;
-                    return true;
-                }
-                if (hasO[2, 0] && empty[0, 0])             // Left Bottom
-                {
-                    pos[0] = 0;
-                    pos[1] = 0;
-                    return true;
-                }
-                if (hasO[1, 1] && empty[1, 2])             //Middle Middle
-                {
-                    pos[0] = 1;
-                    pos[1] = 2;
-                    return true;
-                }
-                if (hasO[1, 2] && empty[1, 1])          // Middle Right
-                {
-                    pos[0] = 1;
-                    pos[1] = 1;
-                    return true;
-                }
-            }
-            #endregion
-
-            #region 1,2
-            if (hasO[1, 2])                                      ///Right Middle
-            {
-                if (hasO[0, 2] && empty[2, 2])                      // Right Top
-                {
-                    pos[0] = 2;
-                    pos[1] = 2;
-                    return true;
-                }
-                if (hasO[2, 2] && empty[0, 2])             // Right Bottom
-                {
-                    pos[0] = 0;
-                    pos[1] = 2;
-                    return true;
-                }
-                if (hasO[1, 1] && empty[1, 0])             //Middle Middle
-                {
-                    pos[0] = 1;
-                    pos[1] = 0;
-                    return true;
-                }
-                if (hasO[1, 0] && empty[1, 1])          // Middle Left
-                {
-                    pos[0] = 1;
-                    pos[1] = 1;
-                    return true;
-                }
-            }
-            #endregion
-
-            #region 2,0
-            if (hasO[2, 0])                                      /// Left Bottom
-            {
-                if (hasO[2, 1] && empty[2, 2])                      // Middle Bottom
-                {
-                    pos[0] = 2;
-                    pos[1] = 2;
-                    return true;
-                }
-                if (hasO[2, 2] && empty[2, 1])             // Right Bottom
-                {
-                    pos[0] = 2;
-                    pos[1] = 1;
-                    return true;
-                }
-                if (hasO[1, 0] && empty[0, 0])             //Left Middle
-                {
-                    pos[0] = 0;
-                    pos[1] = 0;
-                    return true;
-                }
-                if (hasO[0, 0] && empty[1, 0])          // Left Top
-                {
-                    pos[0] = 1;
-                    pos[1] = 0;
-                    return true;
-                }
-                if (hasO[1, 1] && empty[0, 2])       // Middle Middle
-                {
-                    pos[0] = 0;
-                    pos[1] = 2;
-                    return true;
-                }
-                if (hasO[0, 2] && empty[1, 1])   // Right Top
-                {
-                    pos[0] = 1;
-                    pos[1] = 1;
-                    return true;
-                }
-            }
-            #endregion 2,0
-
-            #region 2,1
-            if (hasO[2, 1])                              /// Middle Bottom
-            {
-                if (hasO[2, 2] && empty[2, 0])                      // Right Bottom
-                {
-                    pos[0] = 2;
-                    pos[1] = 0;
-                    return true;
-                }
-                if (hasO[2, 0] && empty[2, 2])             // Left Bottom
-                {
-                    pos[0] = 2;
-                    pos[1] = 2;
-                    return true;
-                }
-                if (hasO[1, 1] && empty[0, 1])             //Middle Middle
-                {
-                    pos[0] = 0;
-                    pos[1] = 1;
-                    return true;
-                }
-                if (hasO[0, 1] && empty[1, 1])          // Top Middle
-                {
-                    pos[0] = 1;
-                    pos[1] = 1;
-                    return true;
-                }
-            }
-            #endregion
-
-            #region 2.2
-            if (hasO[2, 2])              /// Right Middle
-            {
-                if (hasO[2, 1] && empty[2, 0])                      // Middle Bottom
-                {
-                    pos[0] = 2;
-                    pos[1] = 0;
-                    return true;
-                }
-                if (hasO[2, 0] && empty[2, 1])             // Right Bottom
-                {
-                    pos[0] = 2;
-                    pos[1] = 1;
-                    return true;
-                }
-                if (hasO[1, 2] && empty[0, 2])             //Right Middle
-                {
-                    pos[0] = 0;
-                    pos[1] = 2;
-                    return true;
-                }
-                if (hasO[0, 2] && empty[1, 2])          // Top Right
-                {
-                    pos[0] = 1;
-                    pos[1] = 2;
-                    return true;
-                }
-                if (hasO[1, 1] && empty[0, 0])       // Middle Middle
-                {
-                    pos[0] = 0;
-                    pos[1] = 0;
-                    return true;
-                }
-                if (hasO[0, 0] && empty[1, 1])   // Top Left
-                {
-                    pos[0] = 1;
-                    pos[1] = 1;
-                    return true;
-                }
-            }
-            #endregion
-
             return false;
         }
 

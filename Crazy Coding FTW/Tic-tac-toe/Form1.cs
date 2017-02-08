@@ -18,6 +18,27 @@ namespace Tic_tac_toe
         {
             InitializeComponent();
         }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            scoreC.Text = "0";
+            scoreH.Text = "0";
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
+                    AccessBT(i, j).BackColor = Control.DefaultBackColor;
+        }
+
+        private void ngBT_Click(object sender, EventArgs e)         // New Game
+        {
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
+                {
+                    AccessBT(i, j).Text = "";
+                    AccessBT(i, j).Enabled = true;
+                    AccessBT(i, j).BackColor = Control.DefaultBackColor;
+                }
+            AI.AI.EmptyReset();
+
+        }
 
         private Button AccessBT(params int[] b)
         {
@@ -115,28 +136,6 @@ namespace Tic_tac_toe
             PlaceO();
         }
 
-        private void ngBT_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i < 3; i++)
-                for (int j = 0; j < 3; j++)
-                {
-                    AccessBT(i, j).Text = "";
-                    AccessBT(i, j).Enabled = true;
-                    AccessBT(i, j).BackColor = Control.DefaultBackColor;
-                }
-            AI.AI.EmptyReset();
-
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            scoreC.Text = "0";
-            scoreH.Text = "0";
-            for (int i = 0; i < 3; i++)
-                for (int j = 0; j < 3; j++)
-                    AccessBT(i, j).BackColor = Control.DefaultBackColor;
-        }
-
         private bool CheckWin()
         {
             int X = 0;
@@ -156,6 +155,8 @@ namespace Tic_tac_toe
                     for (int k = 0; k < 3; k++)
                         AccessBT(i, k).BackColor = Color.OrangeRed;
                     scoreC.Text = (int.Parse(scoreC.Text) + 1).ToString();
+
+                    DisableButtons();
                     return true;
                 }
                 else if (X == 3)
@@ -163,6 +164,8 @@ namespace Tic_tac_toe
                     for (int k = 0; k < 3; k++)
                         AccessBT(i, k).BackColor = Color.GreenYellow;
                     scoreH.Text = (int.Parse(scoreH.Text) + 1).ToString();
+
+                    DisableButtons();
                     return true;
                 }
                 else
@@ -186,6 +189,9 @@ namespace Tic_tac_toe
                     for (int k = 0; k < 3; k++)
                         AccessBT(k, i).BackColor = Color.OrangeRed;
                     scoreC.Text = (int.Parse(scoreC.Text) + 1).ToString();
+
+
+                    DisableButtons();
                     return true;
                 }
                 else if (X == 3)
@@ -193,6 +199,8 @@ namespace Tic_tac_toe
                     for (int k = 0; k < 3; k++)
                         AccessBT(k, i).BackColor = Color.GreenYellow;
                     scoreH.Text = (int.Parse(scoreH.Text) + 1).ToString();
+
+                    DisableButtons();
                     return true;
                 }
                 else
@@ -203,27 +211,22 @@ namespace Tic_tac_toe
             }
 
             #region Diagonal 1
-            if (AccessBT(0, 0).Text == "X")
-                X++;
-            else if (AccessBT(0, 0).Text == "0")
-                O++;
-
-            if (AccessBT(1, 1).Text == "X")
-                X++;
-            else if (AccessBT(1, 1).Text == "O")
-                O++;
-
-            if (AccessBT(2, 2).Text == "X")
-                X++;
-            else if (AccessBT(2, 2).Text == "O")
-                O++;
+            for(int i=0;i<3;i++)
+            {
+                if (AccessBT(i, i).Text == "X")
+                    X++;
+                else if (AccessBT(i, i).Text == "O")
+                    O++;
+            }
 
             if (O == 3)
             {
                 AccessBT(0, 0).BackColor = Color.OrangeRed;
                 AccessBT(1, 1).BackColor = Color.OrangeRed;
                 AccessBT(2, 2).BackColor = Color.OrangeRed;
-                scoreH.Text = (int.Parse(scoreH.Text) + 1).ToString();
+                scoreC.Text = (int.Parse(scoreC.Text) + 1).ToString();
+
+                DisableButtons();
                 return true;
             }
             else if (X == 3)
@@ -232,6 +235,8 @@ namespace Tic_tac_toe
                 AccessBT(1, 1).BackColor = Color.GreenYellow;
                 AccessBT(2, 2).BackColor = Color.GreenYellow;
                 scoreH.Text = (int.Parse(scoreH.Text) + 1).ToString();
+
+                DisableButtons();
                 return true;
             }
             else
@@ -242,27 +247,22 @@ namespace Tic_tac_toe
             #endregion
 
             #region Diagonal 2
-            if (AccessBT(0, 2).Text == "X")
-                X++;
-            else if (AccessBT(0, 2).Text == "0")
-                O++;
-
-            if (AccessBT(1, 1).Text == "X")
-                X++;
-            else if (AccessBT(1, 1).Text == "O")
-                O++;
-
-            if (AccessBT(2, 0).Text == "X")
-                X++;
-            else if (AccessBT(2, 0).Text == "O")
-                O++;
+            for(int i =0,j=2;i<3;j--,i++)
+            {
+                if (AccessBT(i, j).Text == "X")
+                    X++;
+                else if (AccessBT(i, j).Text == "O")
+                    O++;
+            }
 
             if (O == 3)
             {
                 AccessBT(0, 2).BackColor = Color.OrangeRed;
                 AccessBT(1, 1).BackColor = Color.OrangeRed;
                 AccessBT(2, 0).BackColor = Color.OrangeRed;
-                scoreH.Text = (int.Parse(scoreH.Text) + 1).ToString();
+                scoreC.Text = (int.Parse(scoreC.Text) + 1).ToString();
+
+                DisableButtons();
                 return true;
             }
             else if (X == 3)
@@ -271,6 +271,8 @@ namespace Tic_tac_toe
                 AccessBT(1, 1).BackColor = Color.GreenYellow;
                 AccessBT(2, 0).BackColor = Color.GreenYellow;
                 scoreH.Text = (int.Parse(scoreH.Text) + 1).ToString();
+
+                DisableButtons();
                 return true;
             }
             else
@@ -284,6 +286,13 @@ namespace Tic_tac_toe
 
             return true;
             #endregion
+        }
+
+        private void DisableButtons()
+        {
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
+                    AccessBT(i, j).Enabled = false;
         }
     }
 }
