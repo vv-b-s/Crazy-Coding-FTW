@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "V-SunGlasses-S", "SunGlasse
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "V-Diamond-S", "Diamond\V-Diamond-S.csproj", "{7196D7E3-ABDE-4B15-A1F5-46D296730FF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "V-ГенериранеНаПравоъгълици-U", "V-ГенериранеНаПравоъгълици-U\V-ГенериранеНаПравоъгълици-U.csproj", "{7260320B-2ED3-4758-80C7-EEA6E79277F4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "V-ГенериранеНаПравоъгълици-S", "V-ГенериранеНаПравоъгълици-U\V-ГенериранеНаПравоъгълици-S.csproj", "{7260320B-2ED3-4758-80C7-EEA6E79277F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
