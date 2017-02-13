@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "V-ГенериранеНа�
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N-Increasing Elements-U", "Exam January 16 Problem 8\N-Increasing Elements-U.csproj", "{CD6CE272-01ED-4AF0-9558-3CC6FA54D555}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "V-IncreasingElements-S", "V-IncreasingElements-S\V-IncreasingElements-S.csproj", "{E0A2DC1F-104B-4E35-9943-3A4AD254168F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{CD6CE272-01ED-4AF0-9558-3CC6FA54D555}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD6CE272-01ED-4AF0-9558-3CC6FA54D555}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD6CE272-01ED-4AF0-9558-3CC6FA54D555}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0A2DC1F-104B-4E35-9943-3A4AD254168F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0A2DC1F-104B-4E35-9943-3A4AD254168F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0A2DC1F-104B-4E35-9943-3A4AD254168F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0A2DC1F-104B-4E35-9943-3A4AD254168F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
