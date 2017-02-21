@@ -15,10 +15,11 @@ using Finance;
 namespace FinanceCalculator
 {
     [Activity(Label = "Finance Calculator", MainLauncher = true, Icon = "@drawable/icon", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class MainActivity : Activity
+    public partial class MainActivity : Activity
     {
         internal static int[] spinner = new int[2];                             // Getting the position of the spinners.
         internal static int spaces = 0;                                        // Used to measure words in the InputBox
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -37,6 +38,8 @@ namespace FinanceCalculator
 
             CSpinnerLabel.Visibility = ViewStates.Invisible;
             CalculationSpinner.Visibility = ViewStates.Invisible;
+            InputBox.Enabled = false;
+            CalculationButton.Enabled = false;
 
             #region SpinnerConnection
 
@@ -51,7 +54,7 @@ namespace FinanceCalculator
             // Code
             InputBox.TextChanged += delegate
             {
-                DataFlipper.Text = Calculation.ModifyFlipper(InputBox.Text);
+                DataFlipper.Text = ModifyFlipper(InputBox.Text);
             };
 
             CalculationButton.Click += delegate
@@ -62,8 +65,7 @@ namespace FinanceCalculator
                   {
                       try
                       {
-
-                          ResultBox.Text = Calculation.DoCalculation(attribute);
+                          ResultBox.Text = DoCalculation(attribute);
                       }
                       catch (OverflowException)
                       {
@@ -79,14 +81,17 @@ namespace FinanceCalculator
         {
             var CSpinnerLabel = FindViewById<TextView>(Resource.Id.CSpinnerLabel);
             var CalculationSpinner = FindViewById<Spinner>(Resource.Id.CalculationSpinner);
+            var InputBox = FindViewById<EditText>(Resource.Id.InputBox);
+            var CalculationButton = FindViewById<Button>(Resource.Id.CalculationButton);
 
             ClearData();
             Spinner OperationSpinner = (Spinner)sender;
             spinner[0] = e.Position;
 
             #region Spinner 2 activation
-            if (spinner[0] != (int)Calculate.Nothing)
+            if (spinner[0] != (int)Calculate.None)
             {
+                InputBox.Enabled = true;
                 Array enumValuesCS;
                 string[] arrayForAdapterCS = default(string[]);         // adapterCS won't work otherwise
 
@@ -123,7 +128,12 @@ namespace FinanceCalculator
                 CalculationSpinner.Adapter = adapterCS;
             }
             else
+            {
+                CSpinnerLabel.Visibility = ViewStates.Invisible;
                 CalculationSpinner.Visibility = ViewStates.Invisible;
+                InputBox.Enabled = false;
+                CalculationButton.Enabled = false;
+            }
             #endregion
         }
         private void CalculationSpinner_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
@@ -138,10 +148,12 @@ namespace FinanceCalculator
             var DataFlipper = FindViewById<TextView>(Resource.Id.DataFlipper);
             var InputBox = FindViewById<EditText>(Resource.Id.InputBox);
             var ResultBox = FindViewById<CheckedTextView>(Resource.Id.ResultBox);
+            var CalculationButton = FindViewById<Button>(Resource.Id.CalculationButton);
 
             DataFlipper.Text = "Enter data:";
             InputBox.Text = "";
             ResultBox.Text = "";
+            CalculationButton.Enabled = false;
             spaces = 0;
         }
 

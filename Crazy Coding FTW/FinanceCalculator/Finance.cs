@@ -2,7 +2,7 @@ using System;
 
 namespace Finance
 {
-    public enum Calculate { Nothing, FutureValue, PresentValue }
+    public enum Calculate { None, FutureValue, PresentValue }
     public class Interest
     {
         public enum IntrestType { Simple, Discursive, Anticipative }

@@ -73,5 +73,6 @@
         android:id="@+id/ResultBox"
         android:scrollbars="vertical"
         android:scrollbarStyle="insideOverlay"
-        android:textAlignment="textStart" />
+        android:textAlignment="textStart"
+        android:textIsSelectable="true" />
 </LinearLayout>
