@@ -36,8 +36,7 @@ namespace FinanceCalculator
             var CalculationButton = FindViewById<Button>(Resource.Id.CalculationButton);
             var ResultBox = FindViewById<CheckedTextView>(Resource.Id.ResultBox);
 
-            CSpinnerLabel.Visibility = ViewStates.Invisible;
-            CalculationSpinner.Visibility = ViewStates.Invisible;
+            CSpinnerVisibility(false);
             InputBox.Enabled = false;
             CalculationButton.Enabled = false;
 
@@ -81,16 +80,19 @@ namespace FinanceCalculator
         {
             var CSpinnerLabel = FindViewById<TextView>(Resource.Id.CSpinnerLabel);
             var CalculationSpinner = FindViewById<Spinner>(Resource.Id.CalculationSpinner);
+            var DataFlipper = FindViewById<TextView>(Resource.Id.DataFlipper);
             var InputBox = FindViewById<EditText>(Resource.Id.InputBox);
             var CalculationButton = FindViewById<Button>(Resource.Id.CalculationButton);
 
             ClearData();
+
             Spinner OperationSpinner = (Spinner)sender;
             spinner[0] = e.Position;
 
             #region Spinner 2 activation
             if (spinner[0] != (int)Calculate.None)
             {
+                ClearData();
                 InputBox.Enabled = true;
                 Array enumValuesCS;
                 string[] arrayForAdapterCS = default(string[]);         // adapterCS won't work otherwise
@@ -100,8 +102,7 @@ namespace FinanceCalculator
                 {
                     #region Future Value
                     case (int)Calculate.FutureValue:
-                        CSpinnerLabel.Visibility = ViewStates.Visible;
-                        CalculationSpinner.Visibility = ViewStates.Visible;
+                        CSpinnerVisibility(true);
 
                         CSpinnerLabel.Text = "Choose Interest type:";
                         enumValuesCS = Enum.GetValues(typeof(Interest.IntrestType));
@@ -111,28 +112,37 @@ namespace FinanceCalculator
 
                     #region Present Value
                     case (int)Calculate.PresentValue:
-                        CSpinnerLabel.Visibility = ViewStates.Visible;
-                        CalculationSpinner.Visibility = ViewStates.Visible;
+                        CSpinnerVisibility(true);
 
                         CSpinnerLabel.Text = "Choose Interest type:";
                         enumValuesCS = Enum.GetValues(typeof(Interest.IntrestType));
                         arrayForAdapterCS = enumValuesCS.Cast<Interest.IntrestType>().Select(f => f.ToString()).ToArray();
                         break;
 
+                    #endregion
+
+                    #region Effective Interest Rate
+                    case (int)Calculate.EffectiveIR:
+                        CSpinnerVisibility(false);
+                        break;
                         #endregion
                 }
                 #endregion Second Spinner Condition
 
-                CalculationSpinner.ItemSelected += new EventHandler<AdapterView.ItemSelectedEventArgs>(CalculationSpinner_ItemSelected);
-                var adapterCS = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleSpinnerItem, arrayForAdapterCS);
-                CalculationSpinner.Adapter = adapterCS;
+                if (CalculationSpinner.Visibility == ViewStates.Visible)
+                {
+                    CalculationSpinner.ItemSelected += new EventHandler<AdapterView.ItemSelectedEventArgs>(CalculationSpinner_ItemSelected);
+                    var adapterCS = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleSpinnerItem, arrayForAdapterCS);
+                    CalculationSpinner.Adapter = adapterCS;
+                }
             }
             else
             {
-                CSpinnerLabel.Visibility = ViewStates.Invisible;
-                CalculationSpinner.Visibility = ViewStates.Invisible;
+                CSpinnerVisibility(false);
                 InputBox.Enabled = false;
                 CalculationButton.Enabled = false;
+                DataFlipper.Text = "Enter data:";
+
             }
             #endregion
         }
@@ -156,7 +166,6 @@ namespace FinanceCalculator
             CalculationButton.Enabled = false;
             spaces = 0;
         }
-
         private bool CheckInput(ref string[] input, Calculate type)
         {
             for (int i = 0; i < input.Length; i++)
@@ -174,6 +183,24 @@ namespace FinanceCalculator
                 input[i] = toOutput.ToString();
             }
             return true;
+        }
+        private void CSpinnerVisibility(bool state)
+        {
+            var CSpinnerLabel = FindViewById<TextView>(Resource.Id.CSpinnerLabel);
+            var CalculationSpinner = FindViewById<Spinner>(Resource.Id.CalculationSpinner);
+
+            switch (state)
+            {
+                case true:
+                    CSpinnerLabel.Visibility = ViewStates.Visible;
+                    CalculationSpinner.Visibility = ViewStates.Visible;
+                    break;
+                case false:
+                    CSpinnerLabel.Visibility = ViewStates.Invisible;
+                    CalculationSpinner.Visibility = ViewStates.Invisible;
+                    break;
+            }
+
         }
     }
 }

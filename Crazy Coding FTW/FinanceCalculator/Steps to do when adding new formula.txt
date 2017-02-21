@@ -1,0 +1,4 @@
+﻿1. Add attributes to the new method.
+2. Extend ModifyFlipper() method.
+3. Extend DoCalculation() method.
+4. Define properties for the second spinner.

@@ -14,7 +14,7 @@ using Finance;
 
 namespace FinanceCalculator
 {
-    public partial class MainActivity:Activity
+    public partial class MainActivity : Activity
     {
         private string ModifyFlipper(string InputBox)
         {
@@ -24,45 +24,54 @@ namespace FinanceCalculator
             if (spinner[0] == (int)Calculate.FutureValue)
             {
                 spaces = 0;
-                foreach (char a in InputBox)               // measuring spaces in order to define which attribute to display
-                    if (a == ' ')
-                        spaces++;
+                CountSpaces(InputBox);
 
                 if (spaces != 2 && spaces != 4)
                     CalculationButton.Enabled = false;
                 else
                     CalculationButton.Enabled = true;
 
-                if (spaces < Interest.FutureValue.attributes.Length)
-                    return $"Enter: {Interest.FutureValue.attributes[spaces]}";
-                else return "There is no more data to be filled.";
+                return FlipperFeeder(Interest.FutureValue.attributes);
             }
             #endregion
 
             #region Present Value
             else if (spinner[0] == (int)Calculate.PresentValue)
             {
-
                 spaces = 0;
-                foreach (char a in InputBox)               // measuring spaces in order to define which attribute to display
-                    if (a == ' ')
-                        spaces++;
+                CountSpaces(InputBox);
 
                 if (spaces != 2 && spaces != 4)
                     CalculationButton.Enabled = false;
                 else
                     CalculationButton.Enabled = true;
 
-                if (spaces < Interest.PresentValue.attributes.Length)
-                    return $"Enter: {Interest.PresentValue.attributes[spaces]}";
-                else return "There is no more data to be filled.";
+                return FlipperFeeder(Interest.PresentValue.attributes);
             }
+            #endregion
+
+            #region Effective Interest Rate
+            if (spinner[0] == (int)Calculate.EffectiveIR)
+            {
+                spaces = 0;
+                CountSpaces(InputBox);
+
+                if (spaces == 2)
+                    CalculationButton.Enabled = true;
+                else
+                    CalculationButton.Enabled = false;
+
+                return FlipperFeeder(Interest.EffectiveIR.attributes);
+            }
+
             #endregion
 
             return "";
         }
 
-        internal static string DoCalculation(string[] attribute)
+        private string FlipperFeeder(string[] attributes) => (spaces <= attributes.Length - 1) ? $"Enter: {attributes[spaces]}" : "There is no more data to be filled.";
+
+        private string DoCalculation(string[] attribute)
         {
             #region Future Value
             if (spinner[0] == (int)Calculate.FutureValue)
@@ -70,13 +79,19 @@ namespace FinanceCalculator
                 switch (spinner[1])
                 {
                     case (int)Interest.IntrestType.Simple:
-                        return Interest.FutureValue.SimpleInterest(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]), int.Parse(attribute[2]));
+                        if (spaces == 2)
+                            return Interest.FutureValue.SimpleInterest(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]), int.Parse(attribute[2]));
+                        else if (spaces == 4)
+                            return Interest.FutureValue.SimpleInterest(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]), int.Parse(attribute[2]), int.Parse(attribute[3]), (Interest.InterestPeriods)int.Parse(attribute[4]));
+                        break;
+
                     case (int)Interest.IntrestType.Discursive:
                         if (spaces == 2)
                             return Interest.FutureValue.CDiscursiveInterest(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]), int.Parse(attribute[2]));
                         else if (spaces == 4)
                             return Interest.FutureValue.CDiscursiveInterest(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]), int.Parse(attribute[2]), int.Parse(attribute[3]), (Interest.InterestPeriods)int.Parse(attribute[4]));
                         break;
+
                     case (int)Interest.IntrestType.Anticipative:
                         if (spaces == 2)
                             return Interest.FutureValue.CAnticipativeInterest(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]), int.Parse(attribute[2]));
@@ -88,29 +103,47 @@ namespace FinanceCalculator
             #endregion
 
             #region Present Value
-            else if (MainActivity.spinner[0] == (int)Calculate.PresentValue)
+            else if (spinner[0] == (int)Calculate.PresentValue)
             {
-                switch (MainActivity.spinner[1])
+                switch (spinner[1])
                 {
                     case (int)Interest.IntrestType.Simple:
-                        return Interest.PresentValue.SimpleInterest(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]), int.Parse(attribute[2]));
+                        if (spaces == 2)
+                            return Interest.PresentValue.SimpleInterest(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]), int.Parse(attribute[2]));
+                        else if (spaces == 4)
+                            return Interest.PresentValue.SimpleInterest(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]), int.Parse(attribute[2]), int.Parse(attribute[3]), (Interest.InterestPeriods)int.Parse(attribute[4]));
+                        break;
+
                     case (int)Interest.IntrestType.Discursive:
-                        if (MainActivity.spaces == 2)
+                        if (spaces == 2)
                             return Interest.PresentValue.CDiscursiveInterest(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]), int.Parse(attribute[2]));
-                        else if (MainActivity.spaces == 4)
+                        else if (spaces == 4)
                             return Interest.PresentValue.CDiscursiveInterest(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]), int.Parse(attribute[2]), int.Parse(attribute[3]), (Interest.InterestPeriods)int.Parse(attribute[4]));
                         break;
+
                     case (int)Interest.IntrestType.Anticipative:
-                        if (MainActivity.spaces == 2)
+                        if (spaces == 2)
                             return Interest.PresentValue.CAnticipativeInterest(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]), int.Parse(attribute[2]));
-                        else if (MainActivity.spaces == 4)
+                        else if (spaces == 4)
                             return Interest.PresentValue.CAnticipativeInterest(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]), int.Parse(attribute[2]), int.Parse(attribute[3]), (Interest.InterestPeriods)int.Parse(attribute[4]));
                         break;
                 }
             }
             #endregion
 
+            #region Effective Interest Rate
+            else if(spinner[0]==(int)Calculate.EffectiveIR)
+                return Interest.EffectiveIR.EiR(decimal.Parse(attribute[0]), int.Parse(attribute[1]), (Interest.InterestPeriods)(int.Parse(attribute[2])));
+            #endregion
+
             return "";
+        }
+        private void CountSpaces(string text)
+        {
+
+            foreach (char a in text)               // measuring spaces in order to define which attribute to display
+                if (a == ' ')
+                    spaces++;
         }
     }
 }

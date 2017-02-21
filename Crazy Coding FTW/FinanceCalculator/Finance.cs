@@ -2,7 +2,7 @@ using System;
 
 namespace Finance
 {
-    public enum Calculate { None, FutureValue, PresentValue }
+    public enum Calculate { None, FutureValue, PresentValue, EffectiveIR }
     public class Interest
     {
         public enum IntrestType { Simple, Discursive, Anticipative }
@@ -46,6 +46,15 @@ namespace Finance
                 decimal futureValue = presentValue * (1 + (interestRate / 100) * period);
                 futureValue = Math.Round(futureValue, 2);
                 string output = $"Future Value: {futureValue:0.00}\nUsed formula: FV = PV × (1 + n × r%)\nSolution: {presentValue} × (1 + {period} × {interestRate / 100}) = {futureValue:0.00}";
+                return output;
+            }
+            
+            public static string SimpleInterest(decimal presentValue, decimal interestRate, int period, int iTimes, InterestPeriods iPeriods)
+            {
+                decimal futureValue = presentValue * (1 + period*(((interestRate / 100) / iTimesPeriod(iTimes, iPeriods))));
+                futureValue = Math.Round(futureValue, 2);
+
+                string output = $"Future Value: {futureValue:0.00}\nUsed formula: FV = PV × (1 + r%/m)^(m × n)\nSolution: {presentValue} × (1 + {period} × ({interestRate / 100}/{iTimesPeriod(iTimes, iPeriods)})) = {futureValue:0.00}";
                 return output;
             }
 
@@ -96,7 +105,14 @@ namespace Finance
                 string output = $"Present Value: {presentValue:0.00}\nUsed formula: PV = FV / (1 + n × r%)\nSolution: {futureValue} / (1 + {period} × {interestRate / 100}) = {presentValue:0.00}";
                 return output;
             }
+            public static string SimpleInterest(decimal futureValue, decimal interestRate, int period, int iTimes, InterestPeriods iPeriods)
+            {
+                decimal presentValue = futureValue / (1 + period * (((interestRate / 100) / iTimesPeriod(iTimes, iPeriods))));
+                presentValue = Math.Round(presentValue, 2);
 
+                string output = $"Future Value: {presentValue:0.00}\nUsed formula: PV = FV / (1 + r%/m)^(m × n)\nSolution: {futureValue} / (1 + {period} × ({interestRate / 100}/{iTimesPeriod(iTimes, iPeriods)})) = {presentValue:0.00}";
+                return output;
+            }
             public static string CDiscursiveInterest(decimal futureValue, decimal interestRate, int period)
             {
                 decimal presentValue = futureValue / (decimal)Math.Pow((double)(1 + interestRate / 100), period);
@@ -134,5 +150,17 @@ namespace Finance
             }
         }
 
+        public class EffectiveIR
+        {
+            public static readonly string[] attributes = { "Interest rate", "Interest period times", "Type of periods (Daily - 0, Weekly - 1, Monthly - 2)" };
+            public static string EiR(decimal interestRate, int iTimes, InterestPeriods iPeriods)
+            {
+                decimal eir = (((decimal)Math.Pow((double)(1 + (interestRate/100) / iTimesPeriod(iTimes, iPeriods)), iTimesPeriod(iTimes, iPeriods)))-1)*100;
+                eir = Math.Round(eir, 2);
+
+                string output = $"Effective Interest Rate: {eir:0.00}%\nUsed formula: [(1 + r%/m)^m-1] × 100\nSolution: [(1 + {interestRate/100}/{iTimesPeriod(iTimes, iPeriods)})^{iTimesPeriod(iTimes, iPeriods)}-1] × 100 = {eir:0.00}%";
+                return output;
+            }
+        }
     }
 }
