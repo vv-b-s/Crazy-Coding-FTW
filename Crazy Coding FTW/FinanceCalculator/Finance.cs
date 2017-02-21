@@ -108,7 +108,7 @@ namespace Finance
 
             public static string CDiscursiveInterest(decimal futureValue, decimal interestRate, int period, int iTimes, InterestPeriods iPeriods)     // if interest is not accounted Annually
             {
-                decimal presentValue = futureValue * (decimal)Math.Pow((double)(1 + ((interestRate / 100) / iTimesPeriod(iTimes, iPeriods))), period * iTimesPeriodPow(iTimesPeriod(iTimes, iPeriods)));
+                decimal presentValue = futureValue / (decimal)Math.Pow((double)(1 + ((interestRate / 100) / iTimesPeriod(iTimes, iPeriods))), period * iTimesPeriodPow(iTimesPeriod(iTimes, iPeriods)));
                 presentValue = Math.Round(presentValue, 2);
 
                 string output = $"Present Value: {presentValue:0.00}\nUsed formula: PV = FV / (1 + r%/m)^(m × n)\nSolution: {futureValue} / (1 + {interestRate / 100}/{iTimesPeriod(iTimes, iPeriods)})^({period} × {iTimesPeriodPow(iTimesPeriod(iTimes, iPeriods))}) = {presentValue:0.00}";
