@@ -54,7 +54,7 @@ namespace Finance
                 decimal futureValue = presentValue * (decimal)Math.Pow((double)(1 + interestRate / 100), period);
                 futureValue = Math.Round(futureValue, 2);
 
-                string output = $"Future Value: {futureValue:0.00}\nUsed formula: FV = PV × (1 + r%)^n\nSolution: {presentValue} × (1 + {period} × {interestRate / 100})^{period} = {futureValue:0.00}";
+                string output = $"Future Value: {futureValue:0.00}\nUsed formula: FV = PV × (1 + r%)^n\nSolution: {presentValue} × (1 + {interestRate / 100})^{period} = {futureValue:0.00}";
                 return output;
             }
 
@@ -102,7 +102,7 @@ namespace Finance
                 decimal presentValue = futureValue / (decimal)Math.Pow((double)(1 + interestRate / 100), period);
                 presentValue = Math.Round(presentValue, 2);
 
-                string output = $"Present Value: {presentValue:0.00}\nUsed formula: PV = FV / (1 + r%)^n\nSolution: {futureValue} / (1 + {period} × {interestRate / 100})^{period} = {presentValue:0.00}";
+                string output = $"Present Value: {presentValue:0.00}\nUsed formula: PV = FV / (1 + r%)^n\nSolution: {futureValue} / (1 + {interestRate / 100})^{period} = {presentValue:0.00}";
                 return output;
             }
 
