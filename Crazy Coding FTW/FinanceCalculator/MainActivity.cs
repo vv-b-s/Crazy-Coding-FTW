@@ -78,8 +78,6 @@ namespace FinanceCalculator
 
         private void OperationSpinner_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
-            var CSpinnerLabel = FindViewById<TextView>(Resource.Id.CSpinnerLabel);
-            var CalculationSpinner = FindViewById<Spinner>(Resource.Id.CalculationSpinner);
             var DataFlipper = FindViewById<TextView>(Resource.Id.DataFlipper);
             var InputBox = FindViewById<EditText>(Resource.Id.InputBox);
             var CalculationButton = FindViewById<Button>(Resource.Id.CalculationButton);
@@ -94,29 +92,19 @@ namespace FinanceCalculator
             {
                 ClearData();
                 InputBox.Enabled = true;
-                Array enumValuesCS;
-                string[] arrayForAdapterCS = default(string[]);         // adapterCS won't work otherwise
 
                 #region Second Spinner Condition
                 switch (spinner[0])
                 {
                     #region Future Value
                     case (int)Calculate.FutureValue:
-                        CSpinnerVisibility(true);
-
-                        CSpinnerLabel.Text = "Choose Interest type:";
-                        enumValuesCS = Enum.GetValues(typeof(Interest.IntrestType));
-                        arrayForAdapterCS = enumValuesCS.Cast<Interest.IntrestType>().Select(f => f.ToString()).ToArray();
+                        CSpinnerVisibility<Interest.IntrestType>("Choose Interest type:");
                         break;
                     #endregion
 
                     #region Present Value
                     case (int)Calculate.PresentValue:
-                        CSpinnerVisibility(true);
-
-                        CSpinnerLabel.Text = "Choose Interest type:";
-                        enumValuesCS = Enum.GetValues(typeof(Interest.IntrestType));
-                        arrayForAdapterCS = enumValuesCS.Cast<Interest.IntrestType>().Select(f => f.ToString()).ToArray();
+                        CSpinnerVisibility<Interest.IntrestType>("Choose Interest type:");
                         break;
 
                     #endregion
@@ -128,13 +116,6 @@ namespace FinanceCalculator
                         #endregion
                 }
                 #endregion Second Spinner Condition
-
-                if (CalculationSpinner.Visibility == ViewStates.Visible)
-                {
-                    CalculationSpinner.ItemSelected += new EventHandler<AdapterView.ItemSelectedEventArgs>(CalculationSpinner_ItemSelected);
-                    var adapterCS = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleSpinnerItem, arrayForAdapterCS);
-                    CalculationSpinner.Adapter = adapterCS;
-                }
             }
             else
             {
@@ -200,7 +181,20 @@ namespace FinanceCalculator
                     CalculationSpinner.Visibility = ViewStates.Invisible;
                     break;
             }
+        }
+        private void CSpinnerVisibility<T>(string labelText)                                   // Easily creates the data for the secons spinner
+        {
+            var CSpinnerLabel = FindViewById<TextView>(Resource.Id.CSpinnerLabel);
+            var CalculationSpinner = FindViewById<Spinner>(Resource.Id.CalculationSpinner);
+            CSpinnerVisibility(true);
 
+            var enumValuesCS = Enum.GetValues(typeof(T));
+            var arrayForAdapterCS = enumValuesCS.Cast<Interest.IntrestType>().Select(f => f.ToString()).ToArray();
+
+            CalculationSpinner.ItemSelected += new EventHandler<AdapterView.ItemSelectedEventArgs>(CalculationSpinner_ItemSelected);
+            var adapterCS = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleSpinnerItem, arrayForAdapterCS);
+            CalculationSpinner.Adapter = adapterCS;
+            CSpinnerLabel.Text = labelText;
         }
     }
 }
