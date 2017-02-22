@@ -48,15 +48,6 @@ namespace Finance
                 string output = $"Future Value: {futureValue:0.00}\nUsed formula: FV = PV × (1 + n × r%)\nSolution: {presentValue} × (1 + {period} × {interestRate / 100}) = {futureValue:0.00}";
                 return output;
             }
-            
-            public static string SimpleInterest(decimal presentValue, decimal interestRate, int period, int iTimes, InterestPeriods iPeriods)
-            {
-                decimal futureValue = presentValue * (1 + period*(((interestRate / 100) / iTimesPeriod(iTimes, iPeriods))));
-                futureValue = Math.Round(futureValue, 2);
-
-                string output = $"Future Value: {futureValue:0.00}\nUsed formula: FV = PV × (1 + r%/m)^(m × n)\nSolution: {presentValue} × (1 + {period} × ({interestRate / 100}/{iTimesPeriod(iTimes, iPeriods)})) = {futureValue:0.00}";
-                return output;
-            }
 
             public static string CDiscursiveInterest(decimal presentValue, decimal interestRate, int period)
             {
