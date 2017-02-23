@@ -113,6 +113,12 @@ namespace FinanceCalculator
                     case (int)Calculate.EffectiveIR:
                         CSpinnerVisibility(false);
                         break;
+                    #endregion
+
+                    #region Rate of Return
+                    case (int)Calculate.RateOfReturn:
+                        CSpinnerVisibility(false);
+                        break;
                         #endregion
                 }
                 #endregion Second Spinner Condition
@@ -123,7 +129,6 @@ namespace FinanceCalculator
                 InputBox.Enabled = false;
                 CalculationButton.Enabled = false;
                 DataFlipper.Text = "Enter data:";
-
             }
             #endregion
         }
@@ -182,13 +187,13 @@ namespace FinanceCalculator
                     break;
             }
         }
-        private void CSpinnerVisibility<T>(string labelText)                                   // Easily creates the data for the secons spinner
+        private void CSpinnerVisibility<FormulaTypesEnum>(string labelText)                                   // Easily creates the data for the secons spinner
         {
             var CSpinnerLabel = FindViewById<TextView>(Resource.Id.CSpinnerLabel);
             var CalculationSpinner = FindViewById<Spinner>(Resource.Id.CalculationSpinner);
             CSpinnerVisibility(true);
 
-            var enumValuesCS = Enum.GetValues(typeof(T));
+            var enumValuesCS = Enum.GetValues(typeof(FormulaTypesEnum));
             var arrayForAdapterCS = enumValuesCS.Cast<Interest.IntrestType>().Select(f => f.ToString()).ToArray();
 
             CalculationSpinner.ItemSelected += new EventHandler<AdapterView.ItemSelectedEventArgs>(CalculationSpinner_ItemSelected);
@@ -198,4 +203,3 @@ namespace FinanceCalculator
         }
     }
 }
-

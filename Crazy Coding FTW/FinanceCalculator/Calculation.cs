@@ -66,6 +66,21 @@ namespace FinanceCalculator
 
             #endregion
 
+            #region Rate of Return
+            if(spinner[0]==(int)Calculate.RateOfReturn)
+            {
+                spaces = 0;
+                CountSpaces(InputBox);
+
+                if (spaces == 1)
+                    CalculationButton.Enabled = true;
+                else CalculationButton.Enabled = false;
+
+                return FlipperFeeder(RateOfReturn.attributes);
+            }
+
+            #endregion 
+
             return "";
         }
 
@@ -132,11 +147,15 @@ namespace FinanceCalculator
                 return Interest.EffectiveIR.EiR(decimal.Parse(attribute[0]), (int)double.Parse(attribute[1]), (Interest.InterestPeriods)((int)double.Parse(attribute[2])));
             #endregion
 
+            #region Rate of Return
+            else if (spinner[0] == (int)Calculate.RateOfReturn)
+                return RateOfReturn.RoR(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]));
+            #endregion
+
             return "";
         }
         private void CountSpaces(string text)
         {
-
             foreach (char a in text)               // measuring spaces in order to define which attribute to display
                 if (a == ' ')
                     spaces++;
