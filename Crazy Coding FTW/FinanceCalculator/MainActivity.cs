@@ -156,6 +156,9 @@ namespace FinanceCalculator
         {
             for (int i = 0; i < input.Length; i++)
             {
+                if (input[i] == "")
+                    return false;
+
                 foreach (char a in input[i])
                 {
                     if ((a < '0' || a > '9') && a != ',' && a != '.' && a != ' ' && a != '-')
