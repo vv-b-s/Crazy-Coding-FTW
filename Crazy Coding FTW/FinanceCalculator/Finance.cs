@@ -2,7 +2,7 @@ using System;
 
 namespace Finance
 {
-    public enum Calculate { None, FutureValue, PresentValue, EffectiveIR, RateOfReturn }
+    public enum Calculate { None, FutureValue, PresentValue, EffectiveIR, RateOfReturn, Risk }
     public static class Interest
     {
         public enum IntrestType { Simple, Discursive, Anticipative }
@@ -144,6 +144,34 @@ namespace Finance
 
             string output = $"Rate of return: {result:0.00}%\nUsed formula: ((FV-I)/I) × 100 = r%\nSolution: (({FutureValue} - {ValueOfInvestment}) / {ValueOfInvestment}) × 100 = {result:0.00}%";
             return output;
+        }
+    }
+    public class Risk
+    {
+        public enum CalcType { ExpectedReturns}
+
+        public class ExpectedReturns
+        {
+            public static string[] attributes = {"Anticipated Revenues", "Probability" };
+            private decimal _ER = 0;
+            public decimal ER
+            {
+                set { _ER += value; }
+                get { return _ER; }
+            }
+
+            private string _output = "";
+            public string output => _output;
+
+            public static ExpectedReturns eR = new ExpectedReturns();
+            public string ExpRet (decimal anticipatedR, decimal probability)
+            {
+                decimal currentER;
+                ER = currentER = anticipatedR * (probability / 100);
+                _ER = Math.Round(_ER, 1);
+                return  $"Expected Returns: {ER:0.0}\nUsed formula: ER = {(char)8721}Ri × Pi\nCurrent Expected Returns: {Math.Round(currentER,1):0.0}";
+            }
+            public void Clear() => _ER = 0;
         }
     }
 }

@@ -119,6 +119,13 @@ namespace FinanceCalculator
                     case (int)Calculate.RateOfReturn:
                         CSpinnerVisibility(false);
                         break;
+                    #endregion
+
+                    #region Risk
+                    case (int)Calculate.Risk:
+                        CSpinnerVisibility<Risk.CalcType>("Choose an operation:");
+                        Risk.ExpectedReturns.eR.Clear();
+                        break;
                         #endregion
                 }
                 #endregion Second Spinner Condition
@@ -197,7 +204,7 @@ namespace FinanceCalculator
             CSpinnerVisibility(true);
 
             var enumValuesCS = Enum.GetValues(typeof(FormulaTypesEnum));
-            var arrayForAdapterCS = enumValuesCS.Cast<Interest.IntrestType>().Select(f => f.ToString()).ToArray();
+            var arrayForAdapterCS = enumValuesCS.Cast<FormulaTypesEnum>().Select(f => f.ToString()).ToArray();
 
             CalculationSpinner.ItemSelected += new EventHandler<AdapterView.ItemSelectedEventArgs>(CalculationSpinner_ItemSelected);
             var adapterCS = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleSpinnerItem, arrayForAdapterCS);
