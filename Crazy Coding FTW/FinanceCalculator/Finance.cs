@@ -148,13 +148,13 @@ namespace Finance
     }
     public class Risk
     {
-        public enum CalcType { ExpectedReturns}
+        public enum CalcType { ExpectedReturns, StandardDeviation }
 
         public class ExpectedReturns
         {
-            public static string[] attributes = {"Anticipated Revenues", "Probability" };
+            public static readonly string[] attributes = { "Anticipated Revenues", "Probability" };
             private decimal _ER = 0;
-            public decimal ER
+            decimal ER
             {
                 set { _ER += value; }
                 get { return _ER; }
@@ -164,14 +164,39 @@ namespace Finance
             public string output => _output;
 
             public static ExpectedReturns eR = new ExpectedReturns();
-            public string ExpRet (decimal anticipatedR, decimal probability)
+            public string ExpRet(decimal anticipatedR, decimal probability)
             {
                 decimal currentER;
                 ER = currentER = anticipatedR * (probability / 100);
                 _ER = Math.Round(_ER, 1);
-                return  $"Expected Returns: {ER:0.0}\nUsed formula: ER = {(char)8721}Ri × Pi\nCurrent Expected Returns: {Math.Round(currentER,1):0.0}";
+                return $"Expected Returns: {ER:0.0}\nUsed formula: ER = {(char)8721}Ri × Pi\nCurrent Expected Returns: {Math.Round(currentER, 1):0.0}";
             }
             public void Clear() => _ER = 0;
+        }
+
+        public class StandardDeviation
+        {
+            public static readonly string[] attributes = { "Anticipated Revenues", "Probability", "Expected Revenue" };
+            private decimal _SD = 0;
+
+            decimal SD
+            {
+                set { _SD += value; }
+                get { return (decimal)Math.Sqrt((double)_SD); }
+            }
+
+            public static StandardDeviation sD = new StandardDeviation();
+
+            public string StandDev(decimal ARevenues, decimal Probability, decimal ExpectedR)
+            {
+                decimal Dispersion = (decimal)Math.Pow((double)(ARevenues - ExpectedR), 2) * (Probability / 100);
+                SD = Dispersion = Math.Round(Dispersion, 2);
+
+                string output = $"Standard deviation: {SD:0.00}\nUsed formula: {(char)963}{(char)178} = {(char)8721}(Ri - ER){(char)178} × Pi%\nCurrent disperison: {Dispersion:0.00}\nTotal dispersion: {_SD:0.00}";
+                return output;
+            }
+
+            public void Clear() => _SD = 0;
         }
     }
 }

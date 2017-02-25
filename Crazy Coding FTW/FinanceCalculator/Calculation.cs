@@ -69,25 +69,7 @@ namespace FinanceCalculator
             #region Rate of Return
             if (spinner[0] == (int)Calculate.RateOfReturn)
             {
-                switch(spinner[1])
-                {
-                    case (int)Risk.CalcType.ExpectedReturns:
-                        spaces = 0;
-                        CountSpaces(InputBox);
 
-                        if (spaces == 1)
-                            CalculationButton.Enabled = true;
-                        else CalculationButton.Enabled = false;
-
-                        return FlipperFeeder(RateOfReturn.attributes);
-                }
-            }
-
-            #endregion
-
-            #region Risk
-            if(spinner[0]==(int)Calculate.Risk&&spinner[1]==(int)Risk.CalcType.ExpectedReturns)
-            {
                 spaces = 0;
                 CountSpaces(InputBox);
 
@@ -95,7 +77,31 @@ namespace FinanceCalculator
                     CalculationButton.Enabled = true;
                 else CalculationButton.Enabled = false;
 
-                return FlipperFeeder(Risk.ExpectedReturns.attributes);
+                return FlipperFeeder(RateOfReturn.attributes);
+            }
+
+            #endregion
+
+            #region Risk
+            if (spinner[0] == (int)Calculate.Risk)
+            {
+                spaces = 0;
+                CountSpaces(InputBox);
+
+                switch(spinner[1])
+                {
+                    case (int)Risk.CalcType.ExpectedReturns:
+                        if (spaces == 1)
+                            CalculationButton.Enabled = true;
+                        else CalculationButton.Enabled = false;
+                        return FlipperFeeder(Risk.ExpectedReturns.attributes);
+
+                    case (int)Risk.CalcType.StandardDeviation:
+                        if (spaces == 2)
+                            CalculationButton.Enabled = true;
+                        else CalculationButton.Enabled = false;
+                        return FlipperFeeder(Risk.StandardDeviation.attributes);
+                }
             }
             #endregion
 
@@ -168,12 +174,15 @@ namespace FinanceCalculator
             #endregion
 
             #region Risk
-            else if(spinner[0]==(int)Calculate.Risk)
+            else if (spinner[0] == (int)Calculate.Risk)
             {
-                switch(spinner[1])
+                switch (spinner[1])
                 {
                     case (int)Risk.CalcType.ExpectedReturns:
                         return Risk.ExpectedReturns.eR.ExpRet(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]));
+
+                    case (int)Risk.CalcType.StandardDeviation:
+                        return Risk.StandardDeviation.sD.StandDev(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]), decimal.Parse(attribute[2]));
                 }
             }
             #endregion
