@@ -101,6 +101,12 @@ namespace FinanceCalculator
                             CalculationButton.Enabled = true;
                         else CalculationButton.Enabled = false;
                         return FlipperFeeder(Risk.StandardDeviation.attributes);
+
+                    case (int)Risk.CalcType.VariationCoefficient:
+                        if (spaces == 1)
+                            CalculationButton.Enabled = true;
+                        else CalculationButton.Enabled = false;
+                        return FlipperFeeder(Risk.VariationCoefficient.attributes);
                 }
             }
             #endregion
@@ -183,6 +189,9 @@ namespace FinanceCalculator
 
                     case (int)Risk.CalcType.StandardDeviation:
                         return Risk.StandardDeviation.sD.StandDev(ExtractValue(attribute[0]), ExtractValue(attribute[1]), (attribute[2] == "0") ? Risk.ExpectedReturns.eR.ER : ExtractValue(attribute[2]));           // if Expected Returns is equal to 0, the app will use Risk.ExpectedReturns.eR's data
+
+                    case (int)Risk.CalcType.VariationCoefficient:
+                        return Risk.VariationCoefficient.CV((attribute[0] == "0") ? Risk.StandardDeviation.sD.SD : ExtractValue(attribute[0]), (attribute[1] == "0") ? Risk.ExpectedReturns.eR.ER : ExtractValue(attribute[1]));
                 }
             }
             #endregion

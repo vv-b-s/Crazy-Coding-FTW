@@ -154,7 +154,7 @@ namespace Finance
     }
     public class Risk
     {
-        public enum CalcType { ExpectedReturns, StandardDeviation }
+        public enum CalcType { ExpectedReturns, StandardDeviation, VariationCoefficient }
 
         public class ExpectedReturns
         {
@@ -187,10 +187,10 @@ namespace Finance
             public static readonly string[] attributes = { "Anticipated Revenues", "Probability", "Expected Returns" };
             private decimal _SD = 0;
 
-            decimal SD
+            public decimal SD
             {
                 set { _SD += value; }
-                get { return (decimal)Math.Sqrt((double)_SD); }
+                get { return Math.Round((decimal)Math.Sqrt((double)_SD),2); }
             }
 
             public static StandardDeviation sD = new StandardDeviation();
@@ -205,6 +205,17 @@ namespace Finance
             }
 
             public void Clear() => _SD = 0;
+        }
+
+        public static class VariationCoefficient
+        {
+            public static readonly string[] attributes = { "Standard Devration", "Expected Returns" };
+            public static string CV (decimal SD, decimal ER)
+            {
+                decimal CV = Math.Round(SD / ER, 2);
+                string output = $"Variation Coefficient: {CV:0.00}\nUsed formula: CV = {(char)963} / ER\nSolution: {SD} / {ER} = {CV:0.00}";
+                return output;
+            }
         }
     }
 }
