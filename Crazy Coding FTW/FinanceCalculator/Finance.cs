@@ -154,7 +154,7 @@ namespace Finance
         {
             public static readonly string[] attributes = { "Anticipated Revenues", "Probability" };
             private decimal _ER = 0;
-            decimal ER
+            public decimal ER
             {
                 set { _ER += value; }
                 get { return _ER; }
@@ -176,7 +176,7 @@ namespace Finance
 
         public class StandardDeviation
         {
-            public static readonly string[] attributes = { "Anticipated Revenues", "Probability", "Expected Revenue" };
+            public static readonly string[] attributes = { "Anticipated Revenues", "Probability", "Expected Returns" };
             private decimal _SD = 0;
 
             decimal SD

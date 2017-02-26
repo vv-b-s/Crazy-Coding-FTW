@@ -88,7 +88,7 @@ namespace FinanceCalculator
                 spaces = 0;
                 CountSpaces(InputBox);
 
-                switch(spinner[1])
+                switch (spinner[1])
                 {
                     case (int)Risk.CalcType.ExpectedReturns:
                         if (spaces == 1)
@@ -182,7 +182,7 @@ namespace FinanceCalculator
                         return Risk.ExpectedReturns.eR.ExpRet(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]));
 
                     case (int)Risk.CalcType.StandardDeviation:
-                        return Risk.StandardDeviation.sD.StandDev(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]), decimal.Parse(attribute[2]));
+                        return Risk.StandardDeviation.sD.StandDev(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]), (attribute[2] == "0") ? Risk.ExpectedReturns.eR.ER : decimal.Parse(attribute[2]));           // if Expected Returns is equal to 0, the app will use Risk.ExpectedReturns.eR's data
                 }
             }
             #endregion
