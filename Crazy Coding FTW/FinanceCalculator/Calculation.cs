@@ -119,20 +119,20 @@ namespace FinanceCalculator
                 switch (spinner[1])
                 {
                     case (int)Interest.IntrestType.Simple:
-                        return Interest.FutureValue.SimpleInterest(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]), double.Parse(attribute[2]));
+                        return Interest.FutureValue.SimpleInterest(ExtractValue(attribute[0]), ExtractValue(attribute[1]), (double)ExtractValue(attribute[2]));
 
                     case (int)Interest.IntrestType.Discursive:
                         if (spaces == 2)
-                            return Interest.FutureValue.CDiscursiveInterest(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]), double.Parse(attribute[2]));
+                            return Interest.FutureValue.CDiscursiveInterest(ExtractValue(attribute[0]), ExtractValue(attribute[1]), (double)ExtractValue(attribute[2]));
                         else if (spaces == 4)
-                            return Interest.FutureValue.CDiscursiveInterest(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]), double.Parse(attribute[2]), double.Parse(attribute[3]), (Interest.InterestPeriods)(int)double.Parse(attribute[4]));
+                            return Interest.FutureValue.CDiscursiveInterest(ExtractValue(attribute[0]), ExtractValue(attribute[1]), (double)ExtractValue(attribute[2]), (double)ExtractValue(attribute[3]), (Interest.InterestPeriods)(int)ExtractValue(attribute[4]));
                         break;
 
                     case (int)Interest.IntrestType.Anticipative:
                         if (spaces == 2)
-                            return Interest.FutureValue.CAnticipativeInterest(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]), double.Parse(attribute[2]));
+                            return Interest.FutureValue.CAnticipativeInterest(ExtractValue(attribute[0]), ExtractValue(attribute[1]), (double)ExtractValue(attribute[2]));
                         else if (spaces == 4)
-                            return Interest.FutureValue.CAnticipativeInterest(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]), double.Parse(attribute[2]), double.Parse(attribute[3]), (Interest.InterestPeriods)(int)double.Parse(attribute[4]));
+                            return Interest.FutureValue.CAnticipativeInterest(ExtractValue(attribute[0]), ExtractValue(attribute[1]), (double)ExtractValue(attribute[2]), (double)ExtractValue(attribute[3]), (Interest.InterestPeriods)(int)ExtractValue(attribute[4]));
                         break;
                 }
             }
@@ -144,20 +144,20 @@ namespace FinanceCalculator
                 switch (spinner[1])
                 {
                     case (int)Interest.IntrestType.Simple:
-                        return Interest.PresentValue.SimpleInterest(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]), double.Parse(attribute[2]));
+                        return Interest.PresentValue.SimpleInterest(ExtractValue(attribute[0]), ExtractValue(attribute[1]), (double)ExtractValue(attribute[2]));
 
                     case (int)Interest.IntrestType.Discursive:
                         if (spaces == 2)
-                            return Interest.PresentValue.CDiscursiveInterest(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]), double.Parse(attribute[2]));
+                            return Interest.PresentValue.CDiscursiveInterest(ExtractValue(attribute[0]), ExtractValue(attribute[1]), (double)ExtractValue(attribute[2]));
                         else if (spaces == 4)
-                            return Interest.PresentValue.CDiscursiveInterest(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]), double.Parse(attribute[2]), double.Parse(attribute[3]), (Interest.InterestPeriods)(int)double.Parse(attribute[4]));
+                            return Interest.PresentValue.CDiscursiveInterest(ExtractValue(attribute[0]), ExtractValue(attribute[1]), (double)ExtractValue(attribute[2]), (double)ExtractValue(attribute[3]), (Interest.InterestPeriods)(int)ExtractValue(attribute[4]));
                         break;
 
                     case (int)Interest.IntrestType.Anticipative:
                         if (spaces == 2)
-                            return Interest.PresentValue.CAnticipativeInterest(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]), double.Parse(attribute[2]));
+                            return Interest.PresentValue.CAnticipativeInterest(ExtractValue(attribute[0]), ExtractValue(attribute[1]), (double)ExtractValue(attribute[2]));
                         else if (spaces == 4)
-                            return Interest.PresentValue.CAnticipativeInterest(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]), double.Parse(attribute[2]), double.Parse(attribute[3]), (Interest.InterestPeriods)int.Parse(attribute[4]));
+                            return Interest.PresentValue.CAnticipativeInterest(ExtractValue(attribute[0]), ExtractValue(attribute[1]), (double)ExtractValue(attribute[2]), (double)ExtractValue(attribute[3]), (Interest.InterestPeriods)(int)ExtractValue(attribute[4]));
                         break;
                 }
             }
@@ -165,12 +165,12 @@ namespace FinanceCalculator
 
             #region Effective Interest Rate
             else if (spinner[0] == (int)Calculate.EffectiveIR)
-                return Interest.EffectiveIR.EiR(decimal.Parse(attribute[0]), double.Parse(attribute[1]), (Interest.InterestPeriods)((int)double.Parse(attribute[2])));
+                return Interest.EffectiveIR.EiR(ExtractValue(attribute[0]), (double)ExtractValue(attribute[1]), (Interest.InterestPeriods)((int)ExtractValue(attribute[2])));
             #endregion
 
             #region Rate of Return
             else if (spinner[0] == (int)Calculate.RateOfReturn)
-                return RateOfReturn.RoR(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]));
+                return RateOfReturn.RoR(ExtractValue(attribute[0]), ExtractValue(attribute[1]));
             #endregion
 
             #region Risk
@@ -179,16 +179,17 @@ namespace FinanceCalculator
                 switch (spinner[1])
                 {
                     case (int)Risk.CalcType.ExpectedReturns:
-                        return Risk.ExpectedReturns.eR.ExpRet(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]));
+                        return Risk.ExpectedReturns.eR.ExpRet(ExtractValue(attribute[0]), ExtractValue(attribute[1]));
 
                     case (int)Risk.CalcType.StandardDeviation:
-                        return Risk.StandardDeviation.sD.StandDev(decimal.Parse(attribute[0]), decimal.Parse(attribute[1]), (attribute[2] == "0") ? Risk.ExpectedReturns.eR.ER : decimal.Parse(attribute[2]));           // if Expected Returns is equal to 0, the app will use Risk.ExpectedReturns.eR's data
+                        return Risk.StandardDeviation.sD.StandDev(ExtractValue(attribute[0]), ExtractValue(attribute[1]), (attribute[2] == "0") ? Risk.ExpectedReturns.eR.ER : ExtractValue(attribute[2]));           // if Expected Returns is equal to 0, the app will use Risk.ExpectedReturns.eR's data
                 }
             }
             #endregion
 
             return "";
         }
+
         private void CountSpaces(string text)
         {
             foreach (char a in text)               // measuring spaces in order to define which attribute to display

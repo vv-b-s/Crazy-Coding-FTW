@@ -3,6 +3,7 @@ using System;
 namespace Finance
 {
     public enum Calculate { None, FutureValue, PresentValue, EffectiveIR, RateOfReturn, Risk }
+
     public static class Interest
     {
         public enum IntrestType { Simple, Discursive, Anticipative }
@@ -27,6 +28,7 @@ namespace Finance
         public static class FutureValue
         {
             public static readonly string[] attributes = { "Present Value", "Interest Rate", "Period", "Interest periods", "Type of periods (Daily - 0, Weekly - 1, Monthly - 2)" };
+
             public static string SimpleInterest(decimal presentValue, decimal interestRate, double period)
             {
                 decimal futureValue = presentValue * (1 + (interestRate / 100) * (decimal)period);
@@ -75,6 +77,7 @@ namespace Finance
         public static class PresentValue
         {
             public static readonly string[] attributes = { "Future Value", "Interest Rate", "Period", "Interest periods", "Type of periods (Daily - 0, Weekly - 1, Monthly - 2)" };
+
             public static string SimpleInterest(decimal futureValue, decimal interestRate, double period)
             {
                 decimal presentValue = futureValue / (1 + (interestRate / 100) * (decimal)period);
@@ -82,6 +85,7 @@ namespace Finance
                 string output = $"Present Value: {presentValue:0.00}\nUsed formula: PV = FV / (1 + n × r%)\nSolution: {futureValue} / (1 + {period} × {interestRate / 100}) = {presentValue:0.00}";
                 return output;
             }
+
             public static string CDiscursiveInterest(decimal futureValue, decimal interestRate, double period)
             {
                 decimal presentValue = futureValue / (decimal)Math.Pow((double)(1 + interestRate / 100), period);
@@ -122,6 +126,7 @@ namespace Finance
         public static class EffectiveIR
         {
             public static readonly string[] attributes = { "Interest rate", "Interest period times", "Type of periods (Daily - 0, Weekly - 1, Monthly - 2)" };
+
             public static string EiR(decimal interestRate, double iTimes, InterestPeriods iPeriods)
             {
                 decimal eir = (((decimal)Math.Pow((double)(1 + (interestRate / 100) / (decimal)iTimesPeriod(iTimes, iPeriods)), iTimesPeriod(iTimes, iPeriods))) - 1) * 100;
@@ -132,6 +137,7 @@ namespace Finance
             }
         }
     }
+
     public static class RateOfReturn
     {
         public enum CalculationType { InvestmentAndFV, Profit }
@@ -164,6 +170,7 @@ namespace Finance
             public string output => _output;
 
             public static ExpectedReturns eR = new ExpectedReturns();
+
             public string ExpRet(decimal anticipatedR, decimal probability)
             {
                 decimal currentER;
@@ -171,6 +178,7 @@ namespace Finance
                 _ER = Math.Round(_ER, 1);
                 return $"Expected Returns: {ER:0.0}\nUsed formula: ER = {(char)8721}Ri × Pi\nCurrent Expected Returns: {Math.Round(currentER, 1):0.0}";
             }
+
             public void Clear() => _ER = 0;
         }
 

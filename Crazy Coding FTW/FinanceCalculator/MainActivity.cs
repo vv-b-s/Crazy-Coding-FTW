@@ -140,6 +140,7 @@ namespace FinanceCalculator
             }
             #endregion
         }
+
         private void CalculationSpinner_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
             ClearData();
@@ -160,6 +161,7 @@ namespace FinanceCalculator
             CalculationButton.Enabled = false;
             spaces = 0;
         }
+
         private bool CheckInput(ref string[] input, Calculate type)
         {
             for (int i = 0; i < input.Length; i++)
@@ -174,13 +176,17 @@ namespace FinanceCalculator
                 }
 
                 input[i] = input[i].Replace('.', ',');           // Dots are used as decimal points too
-
-                decimal toOutput = 0;                                 // To avoid 2 decimal points or minuses
-                decimal.TryParse(input[i], out toOutput);
-                input[i] = toOutput.ToString();
             }
             return true;
         }
+
+        private decimal ExtractValue(string input)
+        {
+            decimal output;
+            decimal.TryParse(input, out output);
+            return output;
+        }
+
         private void CSpinnerVisibility(bool state)
         {
             var CSpinnerLabel = FindViewById<TextView>(Resource.Id.CSpinnerLabel);
@@ -198,6 +204,7 @@ namespace FinanceCalculator
                     break;
             }
         }
+
         private void CSpinnerVisibility<FormulaTypesEnum>(string labelText)                                   // Easily creates the data for the secons spinner
         {
             var CSpinnerLabel = FindViewById<TextView>(Resource.Id.CSpinnerLabel);
