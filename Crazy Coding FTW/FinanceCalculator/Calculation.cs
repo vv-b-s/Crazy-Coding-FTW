@@ -107,6 +107,12 @@ namespace FinanceCalculator
                             CalculationButton.Enabled = true;
                         else CalculationButton.Enabled = false;
                         return FlipperFeeder(Risk.VariationCoefficient.attributes);
+
+                    case (int)Risk.CalcType.PortfolioDeviation:
+                        if (spaces == 4)
+                            CalculationButton.Enabled = true;
+                        else CalculationButton.Enabled = false;
+                        return FlipperFeeder(Risk.PortfolioDeviation.attributes);
                 }
             }
             #endregion
@@ -192,6 +198,9 @@ namespace FinanceCalculator
 
                     case (int)Risk.CalcType.VariationCoefficient:
                         return Risk.VariationCoefficient.CV((attribute[0] == "0") ? Risk.StandardDeviation.sD.SD : ExtractValue(attribute[0]), (attribute[1] == "0") ? Risk.ExpectedReturns.eR.ER : ExtractValue(attribute[1]));
+
+                    case (int)Risk.CalcType.PortfolioDeviation:
+                        return Risk.PortfolioDeviation.PD(ExtractValue(attribute[0]), ExtractValue(attribute[1]), ExtractValue(attribute[2]), ExtractValue(attribute[3]), ExtractValue(attribute[4]));
                 }
             }
             #endregion

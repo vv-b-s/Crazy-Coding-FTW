@@ -154,7 +154,7 @@ namespace Finance
     }
     public class Risk
     {
-        public enum CalcType { ExpectedReturns, StandardDeviation, VariationCoefficient }
+        public enum CalcType { ExpectedReturns, StandardDeviation, VariationCoefficient, PortfolioDeviation }
 
         public class ExpectedReturns
         {
@@ -175,8 +175,8 @@ namespace Finance
             {
                 decimal currentER;
                 ER = currentER = anticipatedR * (probability / 100);
-                _ER = Math.Round(_ER, 1);
-                return $"Expected Returns: {ER:0.0}\nUsed formula: ER = {(char)8721}Ri × Pi\nCurrent Expected Returns: {Math.Round(currentER, 1):0.0}";
+                _ER = Math.Round(_ER, 3);
+                return $"Expected Returns: {ER:0.000}\nUsed formula: ER = {(char)8721}Ri × Pi\nCurrent Expected Returns: {Math.Round(currentER, 1):0.000}";
             }
 
             public void Clear() => _ER = 0;
@@ -190,7 +190,7 @@ namespace Finance
             public decimal SD
             {
                 set { _SD += value; }
-                get { return Math.Round((decimal)Math.Sqrt((double)_SD),2); }
+                get { return Math.Round((decimal)Math.Sqrt((double)_SD), 2); }
             }
 
             public static StandardDeviation sD = new StandardDeviation();
@@ -210,10 +210,25 @@ namespace Finance
         public static class VariationCoefficient
         {
             public static readonly string[] attributes = { "Standard Devration", "Expected Returns" };
-            public static string CV (decimal SD, decimal ER)
+            public static string CV(decimal SD, decimal ER)
             {
                 decimal CV = Math.Round(SD / ER, 2);
                 string output = $"Variation Coefficient: {CV:0.00}\nUsed formula: CV = {(char)963} / ER\nSolution: {SD} / {ER} = {CV:0.00}";
+                return output;
+            }
+        }
+
+        public static class PortfolioDeviation
+        {
+            public static readonly string[] attributes = { "Portfolio Share A", "Standard Deviation A", "Portfolio Share B", "Standard Deviation B", "Corelation Coeficient" };
+
+            public static string PD(decimal PSA, decimal SDA, decimal PSB, decimal SDB, decimal CC)
+            {
+                decimal PD = (decimal)(Math.Pow((double)PSA, 2) * Math.Pow((double)SDA / 100, 2));
+                PD += (decimal)(Math.Pow((double)PSB, 2) * Math.Pow((double)SDB/ 100, 2));
+                PD += 2 * PSA * PSB * CC * (SDA/100) * (SDB/100);
+
+                string output = $"Portfolio Deviation: {Math.Round(Math.Sqrt((double)PD)*100, 2):0.00}\nUsed formula: {(char)963} = {(char)8730}(w1{(char)178}{(char)963}1{(char)178} + w2{(char)178}{(char)963}2{(char)178} + 2 × w1 × w2 × K × {(char)963}1 × {(char)963})\nSoluton: {(char)8730}({PSA}{(char)178} × ({SDA}%){(char)178} + {PSB}{(char)178} × ({SDB}%){(char)178} + 2 × {PSA} × {PSB} × {CC} × {SDA}% × {SDB}%) = {Math.Round(Math.Sqrt((double)PD)*100, 2):0.00}";
                 return output;
             }
         }

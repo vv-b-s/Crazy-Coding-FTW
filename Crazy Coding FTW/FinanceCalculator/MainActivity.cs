@@ -143,9 +143,9 @@ namespace FinanceCalculator
 
         private void CalculationSpinner_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
-            ClearData();
             Spinner OperationSpinner = (Spinner)sender;
             spinner[1] = e.Position;
+            ClearData();
         }
 
         private void ClearData()
