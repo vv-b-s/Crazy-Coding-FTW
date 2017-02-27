@@ -61,18 +61,9 @@ namespace FinanceCalculator
                   string[] attribute = InputBox.Text.Split();
 
                   if (CheckInput(ref attribute, (Calculate)spinner[0]))
-                  {
-                      try
-                      {
-                          ResultBox.Text = DoCalculation(attribute);
-                      }
-                      catch (OverflowException)
-                      {
-                          ResultBox.Text = "Impossible calculation";
-                      }
-                  }
-                  else
-                      ResultBox.Text = "Wrong input.";
+                      ResultBox.Text = DoCalculation(attribute);
+
+                  else ResultBox.Text = "Wrong input.";
               };
         }
 

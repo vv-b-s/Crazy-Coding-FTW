@@ -214,5 +214,6 @@ namespace FinanceCalculator
                 if (a == ' ')
                     spaces++;
         }
+
     }
 }
