@@ -62,7 +62,6 @@ namespace FinanceCalculator
 
                   if (CheckInput(ref attribute, (Calculate)spinner[0]))
                       ResultBox.Text = DoCalculation(attribute);
-
                   else ResultBox.Text = "Wrong input.";
               };
         }
@@ -117,6 +116,7 @@ namespace FinanceCalculator
                         CSpinnerVisibility<Risk.CalcType>("Choose an operation:");
                         Risk.ExpectedReturns.eR.Clear();
                         Risk.StandardDeviation.sD.Clear();
+                        Risk.PortfolioCovariation.PC.Clear();
                         break;
                         #endregion
                 }

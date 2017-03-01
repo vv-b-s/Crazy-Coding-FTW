@@ -113,6 +113,12 @@ namespace FinanceCalculator
                             CalculationButton.Enabled = true;
                         else CalculationButton.Enabled = false;
                         return FlipperFeeder(Risk.PortfolioDeviation.attributes);
+
+                    case (int)Risk.CalcType.PortfolioCovariation:
+                        if (spaces == 4)
+                            CalculationButton.Enabled = true;
+                        else CalculationButton.Enabled = false;
+                        return FlipperFeeder(Risk.PortfolioCovariation.attributes);
                 }
             }
             #endregion
@@ -177,12 +183,12 @@ namespace FinanceCalculator
 
             #region Effective Interest Rate
             else if (spinner[0] == (int)Calculate.EffectiveIR)
-                return Interest.EffectiveIR.EiR(ExtractValue(attribute[0]), (double)ExtractValue(attribute[1]), (Interest.InterestPeriods)((int)ExtractValue(attribute[2])));
+                return Interest.EffectiveIR.Calculate(ExtractValue(attribute[0]), (double)ExtractValue(attribute[1]), (Interest.InterestPeriods)((int)ExtractValue(attribute[2])));
             #endregion
 
             #region Rate of Return
             else if (spinner[0] == (int)Calculate.RateOfReturn)
-                return RateOfReturn.RoR(ExtractValue(attribute[0]), ExtractValue(attribute[1]));
+                return RateOfReturn.Calculate(ExtractValue(attribute[0]), ExtractValue(attribute[1]));
             #endregion
 
             #region Risk
@@ -191,16 +197,19 @@ namespace FinanceCalculator
                 switch (spinner[1])
                 {
                     case (int)Risk.CalcType.ExpectedReturns:
-                        return Risk.ExpectedReturns.eR.ExpRet(ExtractValue(attribute[0]), ExtractValue(attribute[1]));
+                        return Risk.ExpectedReturns.eR.Calculate(ExtractValue(attribute[0]), ExtractValue(attribute[1]));
 
                     case (int)Risk.CalcType.StandardDeviation:
-                        return Risk.StandardDeviation.sD.StandDev(ExtractValue(attribute[0]), ExtractValue(attribute[1]), (attribute[2] == "0") ? Risk.ExpectedReturns.eR.ER : ExtractValue(attribute[2]));           // if Expected Returns is equal to 0, the app will use Risk.ExpectedReturns.eR's data
+                        return Risk.StandardDeviation.sD.Calculate(ExtractValue(attribute[0]), ExtractValue(attribute[1]), (attribute[2] == "0") ? Risk.ExpectedReturns.eR.Value : ExtractValue(attribute[2]));           // if Expected Returns is equal to 0, the app will use Risk.ExpectedReturns.eR's data
 
                     case (int)Risk.CalcType.VariationCoefficient:
-                        return Risk.VariationCoefficient.CV((attribute[0] == "0") ? Risk.StandardDeviation.sD.SD : ExtractValue(attribute[0]), (attribute[1] == "0") ? Risk.ExpectedReturns.eR.ER : ExtractValue(attribute[1]));
+                        return Risk.VariationCoefficient.Calculate((attribute[0] == "0") ? Risk.StandardDeviation.sD.Value : ExtractValue(attribute[0]), (attribute[1] == "0") ? Risk.ExpectedReturns.eR.Value : ExtractValue(attribute[1]));
 
                     case (int)Risk.CalcType.PortfolioDeviation:
-                        return Risk.PortfolioDeviation.PD(ExtractValue(attribute[0]), ExtractValue(attribute[1]), ExtractValue(attribute[2]), ExtractValue(attribute[3]), ExtractValue(attribute[4]));
+                        return Risk.PortfolioDeviation.Calculate(ExtractValue(attribute[0]), ExtractValue(attribute[1]), ExtractValue(attribute[2]), ExtractValue(attribute[3]), ExtractValue(attribute[4]));
+
+                    case (int)Risk.CalcType.PortfolioCovariation:
+                        return Risk.PortfolioCovariation.PC.Calculate(ExtractValue(attribute[0]), ExtractValue(attribute[1]), ExtractValue(attribute[2]), ExtractValue(attribute[3]), ExtractValue(attribute[4]));
                 }
             }
             #endregion

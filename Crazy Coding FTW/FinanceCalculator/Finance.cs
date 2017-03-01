@@ -197,7 +197,7 @@ namespace Finance
         {
             public static readonly string[] attributes = { "Interest rate", "Interest period times", "Type of periods (Daily - 0, Weekly - 1, Monthly - 2)" };
 
-            public static string EiR(decimal interestRate, double iTimes, InterestPeriods iPeriods)
+            public static string Calculate(decimal interestRate, double iTimes, InterestPeriods iPeriods)
             {
                 try
                 {
@@ -218,7 +218,7 @@ namespace Finance
     {
         public static readonly string[] attributes = { "Value of investment", "Future Value" };
 
-        public static string RoR(decimal ValueOfInvestment, decimal FutureValue)
+        public static string Calculate(decimal ValueOfInvestment, decimal FutureValue)
         {
             try
             {
@@ -236,13 +236,13 @@ namespace Finance
     }
     public class Risk
     {
-        public enum CalcType { ExpectedReturns, StandardDeviation, VariationCoefficient, PortfolioDeviation }
+        public enum CalcType { ExpectedReturns, StandardDeviation, VariationCoefficient, PortfolioCovariation,PortfolioDeviation }
 
         public class ExpectedReturns
         {
             public static readonly string[] attributes = { "Anticipated Revenues", "Probability" };
             private decimal _ER = 0;
-            public decimal ER
+            public decimal Value
             {
                 set { _ER += value; }
                 get { return _ER; }
@@ -250,15 +250,15 @@ namespace Finance
 
             public static ExpectedReturns eR = new ExpectedReturns();
 
-            public string ExpRet(decimal anticipatedR, decimal probability)
+            public string Calculate(decimal anticipatedR, decimal probability)
             {
                 try
                 {
                     decimal currentER;
-                    ER = currentER = anticipatedR * (probability / 100);
+                    Value = currentER = anticipatedR * (probability / 100);
                     _ER = Math.Round(_ER, 3);
 
-                    return $"Expected Returns: {ER:0.000}\nUsed formula: ER = {(char)8721}Ri × Pi\nCurrent Expected Returns: {Math.Round(currentER, 1):0.000}";
+                    return $"Expected Returns: {Value:0.000}\nUsed formula: ER = {(char)8721}Ri × Pi\nCurrent Expected Returns: {Math.Round(currentER, 1):0.000}";
                 }
                 catch (OverflowException)
                 {
@@ -275,7 +275,7 @@ namespace Finance
             public static readonly string[] attributes = { "Anticipated Revenues", "Probability", "Expected Returns" };
             private decimal _SD = 0;
 
-            public decimal SD
+            public decimal Value
             {
                 set { _SD += value; }
                 get { return Math.Round((decimal)Math.Sqrt((double)_SD), 2); }
@@ -283,14 +283,14 @@ namespace Finance
 
             public static StandardDeviation sD = new StandardDeviation();
 
-            public string StandDev(decimal ARevenues, decimal Probability, decimal ExpectedR)
+            public string Calculate(decimal ARevenues, decimal Probability, decimal ExpectedR)
             {
                 try
                 {
                     decimal Dispersion = (decimal)Math.Pow((double)(ARevenues - ExpectedR), 2) * (Probability / 100);
-                    SD = Dispersion = Math.Round(Dispersion, 2);
+                    Value = Dispersion = Math.Round(Dispersion, 2);
 
-                    return $"Standard deviation: {SD:0.00}\nUsed formula: {(char)963}{(char)178} = {(char)8721}(Ri - ER){(char)178} × Pi%\nCurrent disperison: {Dispersion:0.00}\nTotal dispersion: {_SD:0.00}";
+                    return $"Standard deviation: {Value:0.00}\nUsed formula: {(char)963}{(char)178} = {(char)8721}(Ri - ER){(char)178} × Pi%\nCurrent disperison: {Dispersion:0.00}\nTotal dispersion: {_SD:0.00}";
                 }
                 catch (OverflowException)
                 {
@@ -305,7 +305,7 @@ namespace Finance
         public static class VariationCoefficient
         {
             public static readonly string[] attributes = { "Standard Devration", "Expected Returns" };
-            public static string CV(decimal SD, decimal ER)
+            public static string Calculate(decimal SD, decimal ER)
             {
                 try
                 {
@@ -320,11 +320,43 @@ namespace Finance
             }
         }
 
+        public class PortfolioCovariation
+        {
+            public static readonly string[] attributes = { "Anticipated Revenues A", "Expected Returns A", "Anticipated Revenues B", "Expected Returns B", "Probability" };
+
+            private decimal _PC = 0;
+            public decimal Value
+            {
+                set { _PC += value; }
+                get { return _PC; }
+            }
+
+            public static PortfolioCovariation PC = new PortfolioCovariation();
+
+            public string Calculate(decimal AR1, decimal ER1, decimal AR2, decimal ER2, decimal Probability)
+            {
+                try
+                {
+                    decimal Cov = ((AR1 - ER1) * (AR2 - ER2)) * Probability;
+                    Value = Cov = Math.Round(Cov/100, 3);
+
+                    return $"Portfolio covariation: {Value:0.000}\nUsed formula: Cov = {(char)8721}[(R1i - ER1)(R2i - ER2)](Pi)\nCurrent covariation: {Cov:0.000}";
+                }
+                catch(OverflowException)
+                {
+                    return "Impossible Calculation!";
+                }
+            }
+
+            public void Clear() => _PC = 0;
+
+        }
+
         public static class PortfolioDeviation
         {
             public static readonly string[] attributes = { "Portfolio Share A", "Standard Deviation A", "Portfolio Share B", "Standard Deviation B", "Corelation Coeficient" };
 
-            public static string PD(decimal PSA, decimal SDA, decimal PSB, decimal SDB, decimal CC)
+            public static string Calculate(decimal PSA, decimal SDA, decimal PSB, decimal SDB, decimal CC)
             {
                 try
                 {
