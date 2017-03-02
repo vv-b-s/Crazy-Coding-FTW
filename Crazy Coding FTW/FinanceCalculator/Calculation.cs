@@ -108,17 +108,23 @@ namespace FinanceCalculator
                         else CalculationButton.Enabled = false;
                         return FlipperFeeder(Risk.VariationCoefficient.attributes);
 
-                    case (int)Risk.CalcType.PortfolioDeviation:
-                        if (spaces == 4)
-                            CalculationButton.Enabled = true;
-                        else CalculationButton.Enabled = false;
-                        return FlipperFeeder(Risk.PortfolioDeviation.attributes);
-
                     case (int)Risk.CalcType.PortfolioCovariation:
                         if (spaces == 4)
                             CalculationButton.Enabled = true;
                         else CalculationButton.Enabled = false;
                         return FlipperFeeder(Risk.PortfolioCovariation.attributes);
+
+                    case (int)Risk.CalcType.CorelationCoeficient:
+                        if (spaces == 2)
+                            CalculationButton.Enabled = true;
+                        else CalculationButton.Enabled = false;
+                        return FlipperFeeder(Risk.CorelationCoeficient.attributes);
+
+                    case (int)Risk.CalcType.PortfolioDeviation:
+                        if (spaces == 4)
+                            CalculationButton.Enabled = true;
+                        else CalculationButton.Enabled = false;
+                        return FlipperFeeder(Risk.PortfolioDeviation.attributes);
                 }
             }
             #endregion
@@ -205,11 +211,14 @@ namespace FinanceCalculator
                     case (int)Risk.CalcType.VariationCoefficient:
                         return Risk.VariationCoefficient.Calculate((attribute[0] == "0") ? Risk.StandardDeviation.sD.Value : ExtractValue(attribute[0]), (attribute[1] == "0") ? Risk.ExpectedReturns.eR.Value : ExtractValue(attribute[1]));
 
-                    case (int)Risk.CalcType.PortfolioDeviation:
-                        return Risk.PortfolioDeviation.Calculate(ExtractValue(attribute[0]), ExtractValue(attribute[1]), ExtractValue(attribute[2]), ExtractValue(attribute[3]), ExtractValue(attribute[4]));
-
                     case (int)Risk.CalcType.PortfolioCovariation:
                         return Risk.PortfolioCovariation.PC.Calculate(ExtractValue(attribute[0]), ExtractValue(attribute[1]), ExtractValue(attribute[2]), ExtractValue(attribute[3]), ExtractValue(attribute[4]));
+
+                    case (int)Risk.CalcType.CorelationCoeficient:
+                        return Risk.CorelationCoeficient.CC.Calculate((attribute[0] == "0") ? Risk.PortfolioCovariation.PC.Value : ExtractValue(attribute[0]), ExtractValue(attribute[1]), ExtractValue(attribute[2]));
+
+                    case (int)Risk.CalcType.PortfolioDeviation:
+                        return Risk.PortfolioDeviation.Calculate(ExtractValue(attribute[0]), ExtractValue(attribute[1]), ExtractValue(attribute[2]), ExtractValue(attribute[3]), (attribute[4] == "0") ? Risk.CorelationCoeficient.CC.Value : ExtractValue(attribute[4]));
                 }
             }
             #endregion

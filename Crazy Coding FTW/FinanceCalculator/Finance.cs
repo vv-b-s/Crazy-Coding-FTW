@@ -204,7 +204,7 @@ namespace Finance
                     decimal eir = (((decimal)Math.Pow((double)(1 + (interestRate / 100) / (decimal)iTimesPeriod(iTimes, iPeriods)), iTimesPeriod(iTimes, iPeriods))) - 1) * 100;
                     eir = Math.Round(eir, 2);
 
-                    return $"Effective Interest Rate: {eir:0.00}%\nUsed formula: [(1 + r%/m)^m-1] × 100\nSolution: [(1 + {interestRate / 100}/{iTimesPeriod(iTimes, iPeriods)})^{iTimesPeriod(iTimes, iPeriods)}-1] × 100 = {eir:0.00}%";
+                    return $"Effective Interest Rate: {eir}%\nUsed formula: [(1 + r%/m)^m-1] × 100\nSolution: [(1 + {interestRate / 100}/{iTimesPeriod(iTimes, iPeriods)})^{iTimesPeriod(iTimes, iPeriods)}-1] × 100 = {eir}%";
                 }
                 catch (OverflowException)
                 {
@@ -225,7 +225,7 @@ namespace Finance
                 decimal result = ((FutureValue - ValueOfInvestment) / ValueOfInvestment) * 100;
                 result = Math.Round(result, 2);
 
-                return $"Rate of return: {result:0.00}%\nUsed formula: ((FV-I)/I) × 100 = r%\nSolution: (({FutureValue} - {ValueOfInvestment}) / {ValueOfInvestment}) × 100 = {result:0.00}%";
+                return $"Rate of return: {result}%\nUsed formula: ((FV-I)/I) × 100 = r%\nSolution: (({FutureValue} - {ValueOfInvestment}) / {ValueOfInvestment}) × 100 = {result}%";
             }
             catch (OverflowException)
             {
@@ -236,7 +236,7 @@ namespace Finance
     }
     public class Risk
     {
-        public enum CalcType { ExpectedReturns, StandardDeviation, VariationCoefficient, PortfolioCovariation,PortfolioDeviation }
+        public enum CalcType { ExpectedReturns, StandardDeviation, VariationCoefficient, PortfolioCovariation, CorelationCoeficient, PortfolioDeviation }
 
         public class ExpectedReturns
         {
@@ -254,11 +254,13 @@ namespace Finance
             {
                 try
                 {
+                    probability = (probability > 1 || probability < -1) ? probability / 100 : probability;
+
                     decimal currentER;
                     Value = currentER = anticipatedR * (probability / 100);
                     _ER = Math.Round(_ER, 3);
 
-                    return $"Expected Returns: {Value:0.000}\nUsed formula: ER = {(char)8721}Ri × Pi\nCurrent Expected Returns: {Math.Round(currentER, 1):0.000}";
+                    return $"Expected Returns: {Value}\nUsed formula: ER = {(char)8721}Ri × Pi\nCurrent Expected Returns: {Math.Round(currentER, 1)}";
                 }
                 catch (OverflowException)
                 {
@@ -287,10 +289,12 @@ namespace Finance
             {
                 try
                 {
-                    decimal Dispersion = (decimal)Math.Pow((double)(ARevenues - ExpectedR), 2) * (Probability / 100);
+                    Probability = (Probability > 1 || Probability < -1) ? Probability / 100 : Probability;
+
+                    decimal Dispersion = (decimal)Math.Pow((double)(ARevenues - ExpectedR), 2) * (Probability);
                     Value = Dispersion = Math.Round(Dispersion, 2);
 
-                    return $"Standard deviation: {Value:0.00}\nUsed formula: {(char)963}{(char)178} = {(char)8721}(Ri - ER){(char)178} × Pi%\nCurrent disperison: {Dispersion:0.00}\nTotal dispersion: {_SD:0.00}";
+                    return $"Standard deviation: {Value}\nUsed formula: {(char)963}{(char)178} = {(char)8721}(Ri - ER){(char)178} × Pi%\nCurrent disperison: {Dispersion}\nTotal dispersion: {_SD}";
                 }
                 catch (OverflowException)
                 {
@@ -310,7 +314,7 @@ namespace Finance
                 try
                 {
                     decimal CV = Math.Round(SD / ER, 2);
-                    return $"Variation Coefficient: {CV:0.00}\nUsed formula: CV = {(char)963} / ER\nSolution: {SD} / {ER} = {CV:0.00}";
+                    return $"Variation Coefficient: {CV}\nUsed formula: CV = {(char)963} / ER\nSolution: {SD} / {ER} = {CV}";
                 }
                 catch (OverflowException)
                 {
@@ -337,19 +341,43 @@ namespace Finance
             {
                 try
                 {
-                    decimal Cov = ((AR1 - ER1) * (AR2 - ER2)) * Probability;
-                    Value = Cov = Math.Round(Cov/100, 3);
+                    Probability = (Probability > 1 || Probability < -1) ? Probability / 100 : Probability;
 
-                    return $"Portfolio covariation: {Value:0.000}\nUsed formula: Cov = {(char)8721}[(R1i - ER1)(R2i - ER2)](Pi)\nCurrent covariation: {Cov:0.000}";
+                    decimal Cov = ((AR1 - ER1) * (AR2 - ER2)) * Probability;
+                    Value = Cov = Math.Round(Cov*100, 3);
+
+                    return $"Portfolio covariation: {Value}\nUsed formula: Cov = {(char)8721}[(R1i - ER1)(R2i - ER2)](Pi)\nCurrent covariation: {Cov}";
                 }
-                catch(OverflowException)
+                catch (OverflowException)
                 {
                     return "Impossible Calculation!";
                 }
             }
 
             public void Clear() => _PC = 0;
+        }
 
+        public class CorelationCoeficient
+        {
+            public static readonly string[] attributes = { "Covariation", "Standard Deviation A", "Standard Deviation B" };
+
+            private decimal _CC;
+            public decimal Value
+            {
+                set { _CC = value; }
+                get { return Math.Round(_CC, 2); }
+            }
+
+            public static CorelationCoeficient CC = new CorelationCoeficient();
+
+            public string Calculate(decimal Cov, decimal SDA, decimal SDB)
+            {
+                Value = Cov / (SDA * SDB);
+
+                return $"Corelation Coeficient: {Value}\nUsed formula: K = Cov/{(char)963}1{(char)963}2\nSolution: {Cov}/({SDA} × {SDB}) = {Value}";
+            }
+
+            public void Clear() => Value = 0;
         }
 
         public static class PortfolioDeviation
@@ -364,7 +392,7 @@ namespace Finance
                     PD += (decimal)(Math.Pow((double)PSB, 2) * Math.Pow((double)SDB / 100, 2));
                     PD += 2 * PSA * PSB * CC * (SDA / 100) * (SDB / 100);
 
-                    return $"Portfolio Deviation: {Math.Round(Math.Sqrt((double)PD) * 100, 2):0.00}\nUsed formula: {(char)963} = {(char)8730}(w1{(char)178}{(char)963}1{(char)178} + w2{(char)178}{(char)963}2{(char)178} + 2 × w1 × w2 × K × {(char)963}1 × {(char)963})\nSoluton: {(char)8730}({PSA}{(char)178} × ({SDA}%){(char)178} + {PSB}{(char)178} × ({SDB}%){(char)178} + 2 × {PSA} × {PSB} × {CC} × {SDA}% × {SDB}%) = {Math.Round(Math.Sqrt((double)PD) * 100, 2):0.00}";
+                    return $"Portfolio Deviation: {Math.Round(Math.Sqrt((double)PD) * 100, 2)}\nUsed formula: {(char)963} = {(char)8730}(w1{(char)178}{(char)963}1{(char)178} + w2{(char)178}{(char)963}2{(char)178} + 2 × w1 × w2 × K × {(char)963}1 × {(char)963})\nSoluton: {(char)8730}({PSA}{(char)178} × ({SDA}%){(char)178} + {PSB}{(char)178} × ({SDB}%){(char)178} + 2 × {PSA} × {PSB} × {CC} × {SDA}% × {SDB}%) = {Math.Round(Math.Sqrt((double)PD) * 100, 2)}";
                 }
                 catch (OverflowException)
                 {

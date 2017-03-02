@@ -114,9 +114,12 @@ namespace FinanceCalculator
                     #region Risk
                     case (int)Calculate.Risk:
                         CSpinnerVisibility<Risk.CalcType>("Choose an operation:");
+
                         Risk.ExpectedReturns.eR.Clear();
                         Risk.StandardDeviation.sD.Clear();
                         Risk.PortfolioCovariation.PC.Clear();
+                        Risk.CorelationCoeficient.CC.Clear();
+
                         break;
                         #endregion
                 }
@@ -161,10 +164,8 @@ namespace FinanceCalculator
                     return false;
 
                 foreach (char a in input[i])
-                {
                     if ((a < '0' || a > '9') && a != ',' && a != '.' && a != ' ' && a != '-')
                         return false;
-                }
 
                 input[i] = input[i].Replace('.', ',');           // Dots are used as decimal points too
             }
