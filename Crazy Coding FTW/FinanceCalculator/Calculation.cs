@@ -235,6 +235,14 @@ namespace FinanceCalculator
             return "";
         }
 
+        private void ZeroAlert()                    // When 0 is entered in some formulas, DoCalculation uses stored values depending on the argument required
+        {
+            var msgPop = new AlertDialog.Builder(this);
+            msgPop.SetMessage("Notice:\nIf you have previously calculated something, enter 0 to directly use it.");
+            msgPop.SetNeutralButton("Ok", delegate { });
+
+            msgPop.Show();
+        }
         private void CountSpaces(string text)
         {
             foreach (char a in text)               // measuring spaces in order to define which attribute to display
