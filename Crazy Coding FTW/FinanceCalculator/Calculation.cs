@@ -125,6 +125,12 @@ namespace FinanceCalculator
                             CalculationButton.Enabled = true;
                         else CalculationButton.Enabled = false;
                         return FlipperFeeder(Risk.PortfolioDeviation.attributes);
+
+                    case (int)Risk.CalcType.BetaCoeficient:
+                        if (spaces == 1)
+                            CalculationButton.Enabled = true;
+                        else CalculationButton.Enabled = false;
+                        return FlipperFeeder(Risk.BetaCoeficient.attributes);
                 }
             }
             #endregion
@@ -219,6 +225,9 @@ namespace FinanceCalculator
 
                     case (int)Risk.CalcType.PortfolioDeviation:
                         return Risk.PortfolioDeviation.Calculate(ExtractValue(attribute[0]), ExtractValue(attribute[1]), ExtractValue(attribute[2]), ExtractValue(attribute[3]), (attribute[4] == "0") ? Risk.CorelationCoeficient.CC.Value : ExtractValue(attribute[4]));
+
+                    case (int)Risk.CalcType.BetaCoeficient:
+                        return Risk.BetaCoeficient.Calculate((attribute[0] == "0") ? Risk.PortfolioCovariation.PC.Value : ExtractValue(attribute[0]), (attribute[1] == "0") ? (decimal)Math.Pow((double)Risk.StandardDeviation.sD.Value, 2) : ExtractValue(attribute[1]));
                 }
             }
             #endregion

@@ -236,7 +236,7 @@ namespace Finance
     }
     public class Risk
     {
-        public enum CalcType { ExpectedReturns, StandardDeviation, VariationCoefficient, PortfolioCovariation, CorelationCoeficient, PortfolioDeviation }
+        public enum CalcType { ExpectedReturns, StandardDeviation, VariationCoefficient, PortfolioCovariation, CorelationCoeficient, PortfolioDeviation, BetaCoeficient }
 
         public class ExpectedReturns
         {
@@ -401,5 +401,25 @@ namespace Finance
                 }
             }
         }
+
+        public static class BetaCoeficient
+        {
+            public static string[] attributes = { "Portfolio Covariation", "Portfolio Dispersion" };
+
+            public static string Calculate(decimal Cov, decimal Dispersion)
+            {
+                try
+                {
+                    decimal BC = Cov / Dispersion;
+                    BC = Math.Round(BC, 3);
+
+                    return $"Beta Coeficient: {BC}\nUsed formula: {(char)946} = Cov/{(char)963}{(char)178}\nSolution: {Cov}/{Dispersion:0.00} = {BC}";
+                }
+                catch (OverflowException)
+                {
+                    return "Impossible Calculation!";
+                }
+            }
+        } 
     }
 }
