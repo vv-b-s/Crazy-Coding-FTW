@@ -39,8 +39,11 @@ namespace Finance
                 }
                 catch (OverflowException)
                 {
-
                     return "Impossible Calculation!";
+                }
+                catch(DivideByZeroException)
+                {
+                    return "Dividing by zero error!\nPlease check your input.\nIf your input is correct and you get this error, then your calculation is impossible.";
                 }
             }
 
@@ -55,8 +58,11 @@ namespace Finance
                 }
                 catch (OverflowException)
                 {
-
                     return "Impossible Calculation!";
+                }
+                catch (DivideByZeroException)
+                {
+                    return "Dividing by zero error!\nPlease check your input.\nIf your input is correct and you get this error, then your calculation is impossible.";
                 }
             }
 
@@ -71,8 +77,11 @@ namespace Finance
                 }
                 catch (OverflowException)
                 {
-
                     return "Impossible Calculation!";
+                }
+                catch (DivideByZeroException)
+                {
+                    return "Dividing by zero error!\nPlease check your input.\nIf your input is correct and you get this error, then your calculation is impossible.";
                 }
             }
 
@@ -87,8 +96,11 @@ namespace Finance
                 }
                 catch (OverflowException)
                 {
-
                     return "Impossible Calculation!";
+                }
+                catch (DivideByZeroException)
+                {
+                    return "Dividing by zero error!\nPlease check your input.\nIf your input is correct and you get this error, then your calculation is impossible.";
                 }
             }
 
@@ -103,8 +115,11 @@ namespace Finance
                 }
                 catch (OverflowException)
                 {
-
                     return "Impossible Calculation!";
+                }
+                catch (DivideByZeroException)
+                {
+                    return "Dividing by zero error!\nPlease check your input.\nIf your input is correct and you get this error, then your calculation is impossible.";
                 }
             }
         }
@@ -123,8 +138,11 @@ namespace Finance
                 }
                 catch (OverflowException)
                 {
-
                     return "Impossible Calculation!";
+                }
+                catch (DivideByZeroException)
+                {
+                    return "Dividing by zero error!\nPlease check your input.\nIf your input is correct and you get this error, then your calculation is impossible.";
                 }
             }
 
@@ -139,8 +157,11 @@ namespace Finance
                 }
                 catch (OverflowException)
                 {
-
                     return "Impossible Calculation!";
+                }
+                catch (DivideByZeroException)
+                {
+                    return "Dividing by zero error!\nPlease check your input.\nIf your input is correct and you get this error, then your calculation is impossible.";
                 }
             }
 
@@ -155,8 +176,11 @@ namespace Finance
                 }
                 catch (OverflowException)
                 {
-
                     return "Impossible Calculation!";
+                }
+                catch (DivideByZeroException)
+                {
+                    return "Dividing by zero error!\nPlease check your input.\nIf your input is correct and you get this error, then your calculation is impossible.";
                 }
             }
 
@@ -171,8 +195,11 @@ namespace Finance
                 }
                 catch (OverflowException)
                 {
-
                     return "Impossible Calculation!";
+                }
+                catch (DivideByZeroException)
+                {
+                    return "Dividing by zero error!\nPlease check your input.\nIf your input is correct and you get this error, then your calculation is impossible.";
                 }
             }
 
@@ -187,8 +214,11 @@ namespace Finance
                 }
                 catch (OverflowException)
                 {
-
                     return "Impossible Calculation!";
+                }
+                catch (DivideByZeroException)
+                {
+                    return "Dividing by zero error!\nPlease check your input.\nIf your input is correct and you get this error, then your calculation is impossible.";
                 }
             }
         }
@@ -210,6 +240,10 @@ namespace Finance
                 {
                     return "Impossible Calculation!";
                 }
+                catch (DivideByZeroException)
+                {
+                    return "Dividing by zero error!\nPlease check your input.\nIf your input is correct and you get this error, then your calculation is impossible.";
+                }
             }
         }
     }
@@ -229,8 +263,11 @@ namespace Finance
             }
             catch (OverflowException)
             {
-
                 return "Impossible Calculation!";
+            }
+            catch (DivideByZeroException)
+            {
+                return "Dividing by zero error!\nPlease check your input.\nIf your input is correct and you get this error, then your calculation is impossible.";
             }
         }
     }
@@ -260,11 +297,10 @@ namespace Finance
                     Value = currentER = anticipatedR * (probability / 100);
                     _ER = Math.Round(_ER, 3);
 
-                    return $"Expected Returns: {Value}\nUsed formula: ER = {(char)8721}Ri × Pi\nCurrent Expected Returns: {Math.Round(currentER, 1)}";
+                    return $"Expected Returns: {Value}\nUsed formula: ER = {(char)8721}Ri × Pi\nCurrent Expected Returns: {Math.Round(currentER, 3)}";
                 }
                 catch (OverflowException)
                 {
-
                     return "Impossible Calculation!";
                 }
             }
@@ -318,8 +354,11 @@ namespace Finance
                 }
                 catch (OverflowException)
                 {
-
                     return "Impossible Calculation!";
+                }
+                catch (DivideByZeroException)
+                {
+                    return "Dividing by zero error!\nPlease check your input.\nIf your input is correct and you get this error, then your calculation is impossible.";
                 }
             }
         }
@@ -396,7 +435,6 @@ namespace Finance
                 }
                 catch (OverflowException)
                 {
-
                     return "Impossible Calculation!";
                 }
             }
@@ -418,6 +456,10 @@ namespace Finance
                 catch (OverflowException)
                 {
                     return "Impossible Calculation!";
+                }
+                catch (DivideByZeroException)
+                {
+                    return "Dividing by zero error!\nPlease check your input.\nIf your input is correct and you get this error, then your calculation is impossible.";
                 }
             }
         } 
