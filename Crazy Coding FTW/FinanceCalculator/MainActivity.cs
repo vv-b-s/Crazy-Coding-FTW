@@ -113,7 +113,7 @@ namespace FinanceCalculator
 
                     #region Risk
                     case (int)Calculate.Risk:
-                        CSpinnerVisibility<Risk.CalcType>("Choose an operation:");
+                        CSpinnerVisibility<Risk.CalcType>("Choose a risk operation:");
                         ZeroAlert();
 
                         Risk.ExpectedReturns.eR.Clear();
@@ -175,8 +175,9 @@ namespace FinanceCalculator
 
         private decimal ExtractValue(string input)
         {
+            var culture = new CultureInfo("bg-BG");
             decimal output;
-            decimal.TryParse(input, out output);
+            decimal.TryParse(input, NumberStyles.Any, culture, out output);    //http://stackoverflow.com/questions/11560465/parse-strings-to-double-with-comma-and-point
             return output;
         }
 
