@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "V-DifferentNumbers-S", "V-D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "V-GameOfNumbers-S", "V-GameOfNumbers-S\V-GameOfNumbers-S.csproj", "{99008B91-0B49-4D21-997F-BE54DB0A3C06}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "V-NeighbourWars-S", "V-NeighbourWars-S\V-NeighbourWars-S.csproj", "{A1B0BB5C-B178-4EEC-888B-EB2F2F9716AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{99008B91-0B49-4D21-997F-BE54DB0A3C06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99008B91-0B49-4D21-997F-BE54DB0A3C06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99008B91-0B49-4D21-997F-BE54DB0A3C06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1B0BB5C-B178-4EEC-888B-EB2F2F9716AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1B0BB5C-B178-4EEC-888B-EB2F2F9716AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1B0BB5C-B178-4EEC-888B-EB2F2F9716AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1B0BB5C-B178-4EEC-888B-EB2F2F9716AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
