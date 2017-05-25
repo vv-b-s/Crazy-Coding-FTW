@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "V-УмнатаЛили-S", "V-УмнатаЛили-S\V-УмнатаЛили-S.csproj", "{89E70502-ECAB-49D3-8931-689C1159F573}"
 EndProject
@@ -24,6 +24,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "V-IncreasingElements-S", "V-IncreasingElements-S\V-IncreasingElements-S.csproj", "{E0A2DC1F-104B-4E35-9943-3A4AD254168F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "V-NumberPyramid-S", "V-NumberPyramid-S\V-NumberPyramid-S.csproj", "{D5A65654-4B2B-4377-BF8A-0AF67F4589A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "V-DifferentNumbers-S", "V-DifferentNumbers-S\V-DifferentNumbers-S.csproj", "{F401EEDA-B5EF-42EE-9DBA-7A7804003A3A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +77,10 @@ Global
 		{D5A65654-4B2B-4377-BF8A-0AF67F4589A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5A65654-4B2B-4377-BF8A-0AF67F4589A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5A65654-4B2B-4377-BF8A-0AF67F4589A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F401EEDA-B5EF-42EE-9DBA-7A7804003A3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F401EEDA-B5EF-42EE-9DBA-7A7804003A3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F401EEDA-B5EF-42EE-9DBA-7A7804003A3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F401EEDA-B5EF-42EE-9DBA-7A7804003A3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
